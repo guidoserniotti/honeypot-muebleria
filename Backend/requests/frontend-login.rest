@@ -1,0 +1,177 @@
+### ==============================================
+### 🍯 LOGIN CON EMAIL (Para Frontend)
+### ==============================================
+### Estos requests usan EMAIL en lugar de username
+### Compatible con el formulario de login del frontend
+
+@baseUrl = http://localhost:3000
+@apiUrl = http://localhost:3000/api
+
+### =====================================================
+### TODOS LOS USUARIOS DEL SCHEMA.SQL (usando email)
+### =====================================================
+
+### 1. Login: admin@honeypot.com / admin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@honeypot.com",
+  "password": "admin"
+}
+
+### 2. Login: administrator@honeypot.com / password
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "administrator@honeypot.com",
+  "password": "password"
+}
+
+### 3. Login: root@honeypot.com / root123
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "root@honeypot.com",
+  "password": "root123"
+}
+
+### 4. Login: user@honeypot.com / user123
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@honeypot.com",
+  "password": "user123"
+}
+
+### 5. Login: test@honeypot.com / test
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@honeypot.com",
+  "password": "test"
+}
+
+### 6. Login: guest@honeypot.com / guest
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "guest@honeypot.com",
+  "password": "guest"
+}
+
+### 7. Login: dev@honeypot.com / Dev@2024!
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "dev@honeypot.com",
+  "password": "Dev@2024!"
+}
+
+### 8. Login: service@honeypot.com / ServicePass123
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "service@honeypot.com",
+  "password": "ServicePass123"
+}
+
+### =====================================================
+### SQL INJECTION CON EMAIL
+### =====================================================
+
+### 9. SQL Injection con email - Comment bypass
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@honeypot.com'--",
+  "password": "cualquiercosa"
+}
+
+### 10. SQL Injection con email - OR always true
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "' OR '1'='1",
+  "password": "anything"
+}
+
+### 11. SQL Injection con email - UNION attack
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "' UNION SELECT 1,'hacker','hacker@evil.com','hacked','admin',1,NOW(),NOW(),NULL,0--",
+  "password": "x"
+}
+
+### =====================================================
+### TESTS DE VALIDACIÓN
+### =====================================================
+
+### 12. Email incorrecto (debería fallar)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@honeypot.com",
+  "password": "wrongpassword"
+}
+
+### 13. Email inexistente (debería fallar)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "noexiste@test.com",
+  "password": "test123"
+}
+
+### 14. Sin email (debería fallar)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "password": "admin"
+}
+
+### 15. Sin password (debería fallar)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@honeypot.com"
+}
+
+### =====================================================
+### REGISTRO CON EMAIL
+### =====================================================
+
+### 16. Registrar nuevo usuario
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "nuevousuario",
+  "email": "nuevo@test.com",
+  "password": "password123"
+}
+
+### 17. Registrar con email duplicado (debería fallar)
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "otrouser",
+  "email": "admin@honeypot.com",
+  "password": "test123"
+}

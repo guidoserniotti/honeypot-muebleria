@@ -1,0 +1,122 @@
+### ==============================================
+### 🚪 HONEYPOT - BACKDOOR TESTS
+### ==============================================
+
+@baseUrl = http://localhost:3000
+@apiUrl = http://localhost:3000/api
+
+### =====================================================
+### BACKDOOR - ACCESS WITHOUT AUTHENTICATION
+### =====================================================
+
+### 1. Test Backdoor - Get All Users (SIN token JWT)
+GET {{apiUrl}}/admin/users
+X-AccessDev: Testing-Mode
+
+### 2. Test Backdoor - Get Database Stats (SIN token JWT)
+GET {{apiUrl}}/admin/stats
+X-AccessDev: Testing-Mode
+
+### 3. Test Backdoor - Get Audit Logs (SIN token JWT)
+GET {{apiUrl}}/admin/audit-logs?limit=10
+X-AccessDev: Testing-Mode
+
+### 4. Test Backdoor - Get Audit Logs (últimos 50)
+GET {{apiUrl}}/admin/audit-logs?limit=50
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### BACKDOOR - INTENTAR CON VALORES INCORRECTOS
+### =====================================================
+
+### 5. Test con header incorrecto (debería fallar)
+GET {{apiUrl}}/admin/users
+X-AccessDev: WrongValue
+
+### 6. Test con header diferente nombre (debería fallar)
+GET {{apiUrl}}/admin/users
+X-Developer: Testing-Mode
+
+### 7. Test con valor similar pero incorrecto (debería fallar)
+GET {{apiUrl}}/admin/users
+X-AccessDev: testing-mode
+
+### 8. Test sin header (debería fallar - 401)
+GET {{apiUrl}}/admin/users
+
+### =====================================================
+### BACKDOOR - OPERACIONES PELIGROSAS
+### =====================================================
+
+### 9. Backdoor - Eliminar usuario ID 6 (guest)
+### ⚠️ CUIDADO: Esto elimina permanentemente el usuario
+DELETE {{apiUrl}}/admin/users/6
+X-AccessDev: Testing-Mode
+
+### 10. Backdoor - Intentar eliminar admin (ID 1)
+### ⚠️ PELIGROSO: No hacer si necesitas el usuario admin
+# DELETE {{apiUrl}}/admin/users/1
+# X-AccessDev: Testing-Mode
+
+### =====================================================
+### VERIFICAR QUE BACKDOOR SE REGISTRA EN LOGS
+### =====================================================
+
+### 11. Verificar logs de backdoor - Buscar entradas 'backdoor_access'
+GET {{apiUrl}}/admin/audit-logs?limit=20
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### BACKDOOR - COMBINADO CON OTRAS TÉCNICAS
+### =====================================================
+
+### 12. Backdoor + Login normal (redundante pero válido)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+### 13. Backdoor en Profile endpoint (debería funcionar sin token)
+GET {{apiUrl}}/auth/profile
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### TESTS DE FUZZING DEL BACKDOOR
+### =====================================================
+
+### 14. Case sensitivity - MAYÚSCULAS
+GET {{apiUrl}}/admin/users
+X-ACCESSDEV: Testing-Mode
+
+### 15. Case sensitivity - minúsculas
+GET {{apiUrl}}/admin/users
+x-accessdev: Testing-Mode
+
+### 16. Valor con espacios extras
+GET {{apiUrl}}/admin/users
+X-AccessDev:  Testing-Mode 
+
+### 17. Valor truncado
+GET {{apiUrl}}/admin/users
+X-AccessDev: Testing
+
+### 18. Multiple headers (intentar confundir)
+GET {{apiUrl}}/admin/users
+X-AccessDev: WrongValue
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### BACKDOOR - INFORMACIÓN SENSIBLE
+### =====================================================
+
+### 19. Ver TODAS las contraseñas en texto plano
+GET {{apiUrl}}/admin/users
+X-AccessDev: Testing-Mode
+
+### 20. Estadísticas completas del sistema
+GET {{apiUrl}}/admin/stats
+X-AccessDev: Testing-Mode

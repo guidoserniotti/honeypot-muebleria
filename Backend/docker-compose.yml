@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+    # =====================================================
+    # MySQL Database (Vulnerable Configuration)
+    # =====================================================
+    mysql:
+        image: mysql:8.0
+        container_name: honeypot-mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: vulnerable123
+            MYSQL_DATABASE: honeypot_db
+            MYSQL_USER: honeypot_user
+            MYSQL_PASSWORD: vulnerable123
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+            - ./src/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+        networks:
+            - honeypot-network
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "mysqladmin",
+                    "ping",
+                    "-h",
+                    "localhost",
+                    "-u",
+                    "root",
+                    "-pvulnerable123",
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    # =====================================================
+    # phpMyAdmin (Optional - for easy DB management)
+    # =====================================================
+    phpmyadmin:
+        image: phpmyadmin:latest
+        container_name: honeypot-phpmyadmin
+        restart: unless-stopped
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: 3306
+            PMA_USER: root
+            PMA_PASSWORD: vulnerable123
+        ports:
+            - "8080:80"
+        networks:
+            - honeypot-network
+        depends_on:
+            - mysql
+
+networks:
+    honeypot-network:
+        driver: bridge
+
+volumes:
+    mysql_data:
+        driver: local

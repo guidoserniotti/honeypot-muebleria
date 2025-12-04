@@ -1,0 +1,127 @@
+### ==============================================
+### 👑 HONEYPOT - ADMIN ENDPOINTS (Con JWT)
+### ==============================================
+
+@baseUrl = http://localhost:3000
+@apiUrl = http://localhost:3000/api
+
+### =====================================================
+### PASO 1: LOGIN PARA OBTENER TOKEN
+### =====================================================
+### Ejecuta este request primero y copia el token
+
+### 1. Login como Admin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+### Respuesta esperada:
+### {
+###   "message": "Login successful",
+###   "token": "eyJhbGc...",  <-- COPIAR ESTE TOKEN
+###   "user": { "id": 1, "username": "admin", "role": "admin" }
+### }
+
+### =====================================================
+### PASO 2: USAR ENDPOINTS ADMIN CON TOKEN
+### =====================================================
+### ⚠️ REEMPLAZA "YOUR_JWT_TOKEN" con el token del login
+
+@token = YOUR_JWT_TOKEN
+
+### 2. Get All Users (con token admin)
+GET {{apiUrl}}/admin/users
+Authorization: Bearer {{token}}
+
+### 3. Get Database Statistics (con token admin)
+GET {{apiUrl}}/admin/stats
+Authorization: Bearer {{token}}
+
+### 4. Get Audit Logs (con token admin)
+GET {{apiUrl}}/admin/audit-logs?limit=10
+Authorization: Bearer {{token}}
+
+### 5. Get más Audit Logs
+GET {{apiUrl}}/admin/audit-logs?limit=50
+Authorization: Bearer {{token}}
+
+### 6. Delete User (con token admin)
+### ⚠️ CUIDADO: Elimina permanentemente el usuario
+DELETE {{apiUrl}}/admin/users/6
+Authorization: Bearer {{token}}
+
+### =====================================================
+### TESTS DE AUTORIZACIÓN (Usuario Normal)
+### =====================================================
+
+### 7. Login como usuario normal
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user123"
+}
+
+### Usar el token de usuario normal:
+@userToken = YOUR_USER_TOKEN
+
+### 8. Intentar acceder a admin/users con token de usuario (debería fallar 403)
+GET {{apiUrl}}/admin/users
+Authorization: Bearer {{userToken}}
+
+### 9. Intentar acceder a admin/stats con token de usuario (debería fallar 403)
+GET {{apiUrl}}/admin/stats
+Authorization: Bearer {{userToken}}
+
+### 10. Intentar eliminar usuario con token de usuario (debería fallar 403)
+DELETE {{apiUrl}}/admin/users/6
+Authorization: Bearer {{userToken}}
+
+### =====================================================
+### TESTS SIN AUTORIZACIÓN
+### =====================================================
+
+### 11. Intentar admin/users sin token (debería fallar 401)
+GET {{apiUrl}}/admin/users
+
+### 12. Intentar admin/stats sin token (debería fallar 401)
+GET {{apiUrl}}/admin/stats
+
+### 13. Intentar admin/audit-logs sin token (debería fallar 401)
+GET {{apiUrl}}/admin/audit-logs
+
+### =====================================================
+### TESTS CON TOKEN INVÁLIDO
+### =====================================================
+
+### 14. Token malformado
+GET {{apiUrl}}/admin/users
+Authorization: Bearer token_invalido_123
+
+### 15. Token expirado (si tienes uno)
+GET {{apiUrl}}/admin/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.expired.token
+
+### 16. Token sin Bearer prefix
+GET {{apiUrl}}/admin/users
+Authorization: {{token}}
+
+### =====================================================
+### TESTS DE PROFILE ENDPOINT
+### =====================================================
+
+### 17. Ver perfil con token admin
+GET {{apiUrl}}/auth/profile
+Authorization: Bearer {{token}}
+
+### 18. Ver perfil con token usuario normal
+GET {{apiUrl}}/auth/profile
+Authorization: Bearer {{userToken}}
+
+### 19. Ver perfil sin token (debería fallar)
+GET {{apiUrl}}/auth/profile

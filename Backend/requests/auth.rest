@@ -1,0 +1,165 @@
+### ==============================================
+### 🍯 HONEYPOT - AUTHENTICATION TESTS
+### ==============================================
+
+@baseUrl = http://localhost:3000
+@apiUrl = http://localhost:3000/api
+
+### 1. Health Check
+GET {{baseUrl}}/health
+
+### 2. Root Endpoint Info
+GET {{baseUrl}}/
+
+### =====================================================
+### REGISTRO DE USUARIOS
+### =====================================================
+
+### 3. Registrar nuevo usuario (usuario normal)
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "nuevouser",
+  "email": "nuevo@test.com",
+  "password": "password123"
+}
+
+### 4. Registrar usuario con email duplicado (debería fallar)
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "otrouser",
+  "email": "admin@honeypot.com",
+  "password": "password123"
+}
+
+### =====================================================
+### LOGIN NORMAL (Con credenciales del schema.sql)
+### =====================================================
+### NOTA: Puedes usar username O email para login
+
+### 5. Login Admin - admin/admin (con username)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+### 5b. Login Admin - con email
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@honeypot.com",
+  "password": "admin"
+}
+
+### 6. Login Administrator - administrator/password (con username)
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "administrator",
+  "password": "password"
+}
+
+### 6b. Login Administrator - con email
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "administrator@honeypot.com",
+  "password": "password"
+}
+
+### 7. Login Root - root/root123
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "root123"
+}
+
+### 8. Login User Normal - user/user123
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user123"
+}
+
+### 9. Login Test - test/test
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}
+
+### 10. Login Guest - guest/guest
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "guest",
+  "password": "guest"
+}
+
+### 11. Login Dev Backup - dev_backup/Dev@2024!
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "dev_backup",
+  "password": "Dev@2024!"
+}
+
+### 12. Login Service Account - service_account/ServicePass123
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "service_account",
+  "password": "ServicePass123"
+}
+
+### =====================================================
+### LOGIN FALLIDO (credenciales incorrectas)
+### =====================================================
+
+### 13. Login con contraseña incorrecta
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "wrongpassword"
+}
+
+### 14. Login con usuario inexistente
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "noexiste",
+  "password": "password123"
+}
+
+### =====================================================
+### PROFILE ENDPOINT (Requiere Token JWT)
+### =====================================================
+### NOTA: Reemplaza YOUR_JWT_TOKEN con el token obtenido del login
+
+### 15. Get Profile con Token
+GET {{apiUrl}}/auth/profile
+Authorization: Bearer YOUR_JWT_TOKEN
+
+### 16. Get Profile sin Token (debería fallar)
+GET {{apiUrl}}/auth/profile

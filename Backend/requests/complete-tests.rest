@@ -1,0 +1,217 @@
+### ==============================================
+### 🧪 HONEYPOT - COMPLETE TEST SUITE
+### ==============================================
+### Este archivo ejecuta TODOS los tests en secuencia
+
+@baseUrl = http://localhost:3000
+@apiUrl = http://localhost:3000/api
+
+### =====================================================
+### SECCIÓN 1: HEALTH CHECKS
+### =====================================================
+
+### Test 1: Health Check
+GET {{baseUrl}}/health
+
+### Test 2: Root Endpoint
+GET {{baseUrl}}/
+
+### Test 3: 404 Endpoint
+GET {{baseUrl}}/nonexistent
+
+### =====================================================
+### SECCIÓN 2: REGISTRO DE USUARIOS
+### =====================================================
+
+### Test 4: Registrar usuario nuevo
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser1",
+  "email": "testuser1@test.com",
+  "password": "test123"
+}
+
+### =====================================================
+### SECCIÓN 3: LOGIN NORMAL (Todos los usuarios del schema.sql)
+### =====================================================
+
+### Test 5: Login admin/admin ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+### Test 6: Login administrator/password ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "administrator",
+  "password": "password"
+}
+
+### Test 7: Login root/root123 ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "root123"
+}
+
+### Test 8: Login user/user123 ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user123"
+}
+
+### Test 9: Login test/test ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}
+
+### Test 10: Login guest/guest ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "guest",
+  "password": "guest"
+}
+
+### Test 11: Login dev_backup/Dev@2024! ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "dev_backup",
+  "password": "Dev@2024!"
+}
+
+### Test 12: Login service_account/ServicePass123 ✅
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "service_account",
+  "password": "ServicePass123"
+}
+
+### =====================================================
+### SECCIÓN 4: SQL INJECTION - TOP PAYLOADS
+### =====================================================
+
+### Test 13: SQL Injection - admin'-- 💉
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin'--",
+  "password": "cualquiercosa"
+}
+
+### Test 14: SQL Injection - ' OR '1'='1 💉
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "' OR '1'='1",
+  "password": "anything"
+}
+
+### Test 15: SQL Injection - admin' OR 1=1-- 💉
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin' OR 1=1--",
+  "password": "x"
+}
+
+### =====================================================
+### SECCIÓN 5: BACKDOOR TESTS
+### =====================================================
+
+### Test 16: Backdoor - Get Users (sin auth) 🚪
+GET {{apiUrl}}/admin/users
+X-AccessDev: Testing-Mode
+
+### Test 17: Backdoor - Get Stats (sin auth) 🚪
+GET {{apiUrl}}/admin/stats
+X-AccessDev: Testing-Mode
+
+### Test 18: Backdoor - Get Audit Logs (sin auth) 🚪
+GET {{apiUrl}}/admin/audit-logs?limit=10
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### SECCIÓN 6: AUTHORIZATION TESTS
+### =====================================================
+
+### Test 19: Acceso sin token (debería fallar 401) ❌
+GET {{apiUrl}}/admin/users
+
+### Test 20: Profile sin token (debería fallar 401) ❌
+GET {{apiUrl}}/auth/profile
+
+### =====================================================
+### SECCIÓN 7: TESTS DE VALIDACIÓN
+### =====================================================
+
+### Test 21: Login con credenciales incorrectas ❌
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "wrongpassword"
+}
+
+### Test 22: Login con usuario inexistente ❌
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "noexiste",
+  "password": "password"
+}
+
+### Test 23: Registro con email duplicado ❌
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "otroadmin",
+  "email": "admin@honeypot.com",
+  "password": "test123"
+}
+
+### =====================================================
+### RESUMEN DE TESTS
+### =====================================================
+### Total: 23 tests
+### 
+### ✅ Deberían pasar (20):
+###    - Health checks (3)
+###    - Registro nuevo (1)
+###    - Logins normales (8)
+###    - SQL Injections (3)
+###    - Backdoors (3)
+###    - Validaciones de error (2)
+### 
+### ❌ Deberían fallar apropiadamente (3):
+###    - Sin autorización (2)
+###    - Email duplicado (1)
+### =====================================================
