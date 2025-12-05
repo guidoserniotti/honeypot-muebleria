@@ -55,12 +55,12 @@ const MisPedidosPage = () => {
             ) : (
                 <div className="pedidos-list">
                     {pedidos.map((pedido) => (
-                        <div key={pedido._id} className="pedido-card">
+                        <div key={pedido.id} className="pedido-card">
                             <div className="pedido-header">
                                 <div className="pedido-info">
-                                    <h3>Pedido #{pedido._id.slice(-6)}</h3>
+                                    <h3>Pedido #{pedido.id}</h3>
                                     <p className="pedido-fecha">
-                                        {formatDate(pedido.createdAt)}
+                                        {formatDate(pedido.created_at)}
                                     </p>
                                 </div>
                                 <div
@@ -73,23 +73,32 @@ const MisPedidosPage = () => {
                             </div>
 
                             <div className="pedido-items">
-                                {pedido.items.map((item, index) => (
-                                    <div key={index} className="pedido-item">
-                                        <div className="item-info">
-                                            <span className="item-nombre">
-                                                {item.nombre}
-                                            </span>
-                                            <span className="item-cantidad">
-                                                x{item.quantity}
-                                            </span>
+                                {pedido.items && pedido.items.length > 0 ? (
+                                    pedido.items.map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className="pedido-item"
+                                        >
+                                            <div className="item-info">
+                                                <span className="item-nombre">
+                                                    {item.nombre}
+                                                </span>
+                                                <span className="item-cantidad">
+                                                    x{item.quantity}
+                                                </span>
+                                            </div>
+                                            <div className="item-precio">
+                                                {formatearPrecio(
+                                                    item.price * item.quantity
+                                                )}
+                                            </div>
                                         </div>
-                                        <div className="item-precio">
-                                            {formatearPrecio(
-                                                item.precio * item.quantity
-                                            )}
-                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="pedido-item">
+                                        <span>Sin items</span>
                                     </div>
-                                ))}
+                                )}
                             </div>
 
                             <div className="pedido-footer">

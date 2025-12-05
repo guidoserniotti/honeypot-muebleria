@@ -14,6 +14,7 @@ export const formatDate = (dateString) => {
 export const getOrderStatusText = (status) => {
     const statusMap = {
         pending: "Pendiente",
+        processing: "En Proceso",
         completed: "Completado",
         cancelled: "Cancelado",
     };

@@ -6,6 +6,7 @@ import { createPool, checkConnection } from "./config/database.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 // Crear aplicación Express
 const app = express();
@@ -66,6 +67,9 @@ app.use("/api/admin", adminRoutes);
 
 // Rutas de productos (públicas y vulnerables a SQL injection)
 app.use("/api/productos", productRoutes);
+
+// Rutas de órdenes (protegidas pero vulnerables a SQLi, IDOR y total manipulation)
+app.use("/api/orders", orderRoutes);
 
 // =====================================================
 // RUTAS BÁSICAS

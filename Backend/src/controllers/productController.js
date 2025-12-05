@@ -138,6 +138,21 @@ export const createProduct = async (req, res, next) => {
             });
         }
 
+        // 🛡️ VALIDACIÓN DE PRECIO MÍNIMO (Protección real)
+        // Los productos NO pueden tener precio menor a $15000
+        // Esto previene manipulación de precios en productos
+        if (precio < 15000) {
+            console.log(
+                `⚠️ Attempt to create product with price $${precio} (minimum: $15000)`
+            );
+            return res.status(400).json({
+                error: "Validation error",
+                message: "Product price must be at least $15000",
+                minimumPrice: 15000,
+                receivedPrice: precio,
+            });
+        }
+
         // ⚠️ VULNERABLE: SQL Injection en INSERT
         const query = `
             INSERT INTO products (nombre, descripcion, precio, stock, categoria, imagenUrl) 
@@ -181,6 +196,20 @@ export const updateProduct = async (req, res, next) => {
             req.body;
 
         console.log(`📦 PUT /api/productos/${id} - Updating product`);
+
+        // 🛡️ VALIDACIÓN DE PRECIO MÍNIMO (Protección real)
+        // Si se intenta actualizar el precio, debe ser >= $15000
+        if (precio !== undefined && precio < 15000) {
+            console.log(
+                `⚠️ Attempt to update product ${id} with price $${precio} (minimum: $15000)`
+            );
+            return res.status(400).json({
+                error: "Validation error",
+                message: "Product price must be at least $15000",
+                minimumPrice: 15000,
+                receivedPrice: precio,
+            });
+        }
 
         // ⚠️ VULNERABLE: SQL Injection en UPDATE
         const updates = [];

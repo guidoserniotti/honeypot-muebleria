@@ -32,7 +32,7 @@ const CartPage = () => {
             clearCart();
             showNotification(
                 `¡Pedido creado exitosamente! ID: ${
-                    result.order?._id || "N/A"
+                    result.order?.id || result.orderId || "N/A"
                 }`,
                 "success"
             );
