@@ -141,24 +141,24 @@ INSERT INTO users (username, email, password, role) VALUES
 
 INSERT INTO products (nombre, descripcion, precio, stock, categoria, imagenUrl, detalle, destacado) VALUES
 -- Sala de Estar
-('Sofá Patagonia', 'Sofá moderno de 3 cuerpos tapizado en tela premium', 89999.99, 8, 'sala', 'Sofá Patagonia.png', '{"material": "Tela premium", "medidas": "220x90x85cm", "color": "Gris oscuro", "peso": "75kg"}', TRUE),
-('Sillón Copacabana', 'Sillón individual de diseño contemporáneo', 45900.00, 12, 'sala', 'Sillón Copacabana.png', '{"material": "Cuero sintético", "medidas": "85x80x90cm", "color": "Marrón", "peso": "30kg"}', FALSE),
-('Butaca Mendoza', 'Butaca estilo clásico con respaldo alto', 38500.00, 15, 'sala', 'Butaca Mendoza.png', '{"material": "Tela", "medidas": "75x70x100cm", "color": "Beige", "peso": "22kg"}', FALSE),
-('Mesa de Centro Araucaria', 'Mesa de centro de madera maciza con detalles en metal', 24900.00, 20, 'sala', 'Mesa de Centro Araucaria.png', '{"material": "Madera y metal", "medidas": "100x60x45cm", "color": "Natural", "peso": "18kg"}', FALSE),
+('Sofa Patagonia', 'Sofa moderno de 3 cuerpos tapizado en tela premium', 89999.99, 8, 'sala', 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400', '{"material": "Tela premium", "medidas": "220x90x85cm", "color": "Gris oscuro", "peso": "75kg"}', TRUE),
+('Sillon Copacabana', 'Sillon individual de diseno contemporaneo', 45900.00, 12, 'sala', 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=400', '{"material": "Cuero sintetico", "medidas": "85x80x90cm", "color": "Marron", "peso": "30kg"}', FALSE),
+('Butaca Mendoza', 'Butaca estilo clasico con respaldo alto', 38500.00, 15, 'sala', 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400', '{"material": "Tela", "medidas": "75x70x100cm", "color": "Beige", "peso": "22kg"}', FALSE),
+('Mesa de Centro Araucaria', 'Mesa de centro de madera maciza con detalles en metal', 24900.00, 20, 'sala', 'https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=400', '{"material": "Madera y metal", "medidas": "100x60x45cm", "color": "Natural", "peso": "18kg"}', FALSE),
 
 -- Comedor
-('Mesa Comedor Pampa', 'Mesa de comedor extensible para 6-8 personas', 65000.00, 6, 'comedor', 'Mesa Comedor Pampa.png', '{"material": "Madera maciza", "medidas": "180x90x75cm", "color": "Nogal", "peso": "55kg"}', TRUE),
-('Sillas Córdoba', 'Set de 4 sillas de comedor tapizadas', 42000.00, 10, 'comedor', 'Sillas Córdoba.png', '{"material": "Madera y tela", "medidas": "45x50x95cm c/u", "color": "Gris", "peso": "8kg c/u"}', FALSE),
-('Aparador Uspallata', 'Aparador de madera con puertas y cajones', 52000.00, 5, 'comedor', 'Aparador Uspallata.png', '{"material": "Madera", "medidas": "150x45x85cm", "color": "Roble", "peso": "42kg"}', FALSE),
+('Mesa Comedor Pampa', 'Mesa de comedor extensible para 6-8 personas', 65000.00, 6, 'comedor', 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=400', '{"material": "Madera maciza", "medidas": "180x90x75cm", "color": "Nogal", "peso": "55kg"}', TRUE),
+('Sillas Cordoba', 'Set de 4 sillas de comedor tapizadas', 42000.00, 10, 'comedor', 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400', '{"material": "Madera y tela", "medidas": "45x50x95cm c/u", "color": "Gris", "peso": "8kg c/u"}', FALSE),
+('Aparador Uspallata', 'Aparador de madera con puertas y cajones', 52000.00, 5, 'comedor', 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=400', '{"material": "Madera", "medidas": "150x45x85cm", "color": "Roble", "peso": "42kg"}', FALSE),
 
 -- Dormitorio
-('Cama Neuquén', 'Cama matrimonial con cabecera acolchada', 78500.00, 8, 'dormitorio', 'Cama Neuquén.png', '{"material": "MDF y tela", "medidas": "160x200cm", "color": "Gris claro", "peso": "60kg"}', TRUE),
-('Mesa de Noche Aconcagua', 'Mesa de luz con 2 cajones', 18900.00, 18, 'dormitorio', 'Mesa de Noche Aconcagua.png', '{"material": "MDF", "medidas": "45x40x50cm", "color": "Blanco", "peso": "12kg"}', FALSE),
+('Cama Neuquen', 'Cama matrimonial con cabecera acolchada', 78500.00, 8, 'dormitorio', 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400', '{"material": "MDF y tela", "medidas": "160x200cm", "color": "Gris claro", "peso": "60kg"}', TRUE),
+('Mesa de Noche Aconcagua', 'Mesa de luz con 2 cajones', 18900.00, 18, 'dormitorio', 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=400', '{"material": "MDF", "medidas": "45x40x50cm", "color": "Blanco", "peso": "12kg"}', FALSE),
 
 -- Oficina
-('Escritorio Costa', 'Escritorio ejecutivo con múltiples cajones', 55000.00, 10, 'oficina', 'Escritorio Costa.png', '{"material": "Melamina", "medidas": "140x60x75cm", "color": "Negro", "peso": "35kg"}', FALSE),
-('Silla de Trabajo Belgrano', 'Silla ergonómica de oficina con soporte lumbar', 32000.00, 25, 'oficina', 'Silla de Trabajo Belgrano.png', '{"material": "Malla y metal", "medidas": "60x60x110cm", "color": "Negro", "peso": "15kg"}', FALSE),
-('Biblioteca Recoleta', 'Biblioteca modular de 5 estantes', 48500.00, 7, 'oficina', 'Biblioteca Recoleta.png', '{"material": "Melamina", "medidas": "80x30x180cm", "color": "Blanco", "peso": "28kg"}', FALSE);
+('Escritorio Costa', 'Escritorio ejecutivo con multiples cajones', 55000.00, 10, 'oficina', 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400', '{"material": "Melamina", "medidas": "140x60x75cm", "color": "Negro", "peso": "35kg"}', FALSE),
+('Silla de Trabajo Belgrano', 'Silla ergonomica de oficina con soporte lumbar', 32000.00, 25, 'oficina', 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400', '{"material": "Malla y metal", "medidas": "60x60x110cm", "color": "Negro", "peso": "15kg"}', FALSE),
+('Biblioteca Recoleta', 'Biblioteca modular de 5 estantes', 48500.00, 7, 'oficina', 'https://images.unsplash.com/photo-1594620302200-9a762244a156?w=400', '{"material": "Melamina", "medidas": "80x30x180cm", "color": "Blanco", "peso": "28kg"}', FALSE);
 
 -- =====================================================
 -- INSERTAR ÓRDENES DE EJEMPLO
