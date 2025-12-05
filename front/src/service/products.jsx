@@ -18,6 +18,31 @@ export const getAllProducts = async () => {
     }
 };
 
+export const searchProducts = async (searchTerm) => {
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/search/${encodeURIComponent(searchTerm)}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeaders(),
+                },
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        // El backend retorna { success, count, searchTerm, products }
+        return data.products;
+    } catch (error) {
+        console.error("Error searching products:", error);
+        throw error;
+    }
+};
+
 export const getProductById = async (id) => {
     try {
         const response = await fetch(`${API_BASE_URL}/${id}`, {
