@@ -15,6 +15,9 @@ export const createPool = () => {
             user: config.db.user,
             password: config.db.password,
             database: config.db.database,
+            // ⚠️ Habilitado intencionadamente para permitir stacked queries en el honeypot
+            // Esto es INSEGURO para producción pero útil en entornos controlados de testing
+            multipleStatements: true,
             waitForConnections: true,
             connectionLimit: 10,
             queueLimit: 0,

