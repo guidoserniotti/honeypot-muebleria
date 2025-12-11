@@ -323,6 +323,30 @@ Backend/
 
 ---
 
+## 🔔 Estado Actual del Proyecto (resumen rápido)
+
+- Fecha: 2025-12-07
+- El backend está operativo en `http://localhost:3000` y la base de datos puede inicializarse con `npm run init-db`.
+- Se creó una tabla `contacts` y existen endpoints para CRUD de contactos (`/api/contacts`). Estos endpoints son intencionalmente vulnerables a SQL Injection (se construyen consultas mediante concatenación de strings).
+- Durante el desarrollo se exploró añadir un modo de "simulación" (`?simulate=true`) para devolver la consulta SQL construida sin ejecutarla, pero su implementación quedó en pausa. Si necesitas el modo de simulación, se puede añadir posteriormente.
+- Para facilitar pruebas, la conexión MySQL en el entorno de laboratorio puede haber sido configurada con `multipleStatements: true` (esto permite consultas apiladas). Esta opción es insegura fuera de un entorno de laboratorio y se recomienda revertirla si el código se reutiliza.
+- Archivos de prueba y ejemplos de payloads están en `Backend/requests/` (incluye `contact-injection.rest`, `sql-injection.rest`, y scripts PowerShell de prueba).
+- La base de datos de ejemplo se inicializa con varios usuarios administrativos y contraseñas en texto plano (diseñado así para el honeypot). Nunca usar estas credenciales fuera del laboratorio.
+
+### Pendiente / Recomendaciones
+
+- Si vas a continuar con ejercicios de inyección en `contacts`, reinicia la DB y el servidor antes de las pruebas:
+
+```powershell
+cd Backend
+npm run init-db
+npm run dev
+```
+
+- Considerar implementar el modo `?simulate=true` en `POST /api/contacts` para inspeccionar la SQL sin ejecutar consultas destructivas.
+- Después de completar las prácticas, revertir `multipleStatements` y eliminar datos de prueba.
+
+
 ## 🛡️ Mecanismos de Seguridad (Débiles Intencionalmente)
 
 ### 1. Autenticación JWT

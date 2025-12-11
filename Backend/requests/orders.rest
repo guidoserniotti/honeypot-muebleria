@@ -1,0 +1,22 @@
+@baseUrl = http://localhost:3000
+@api = {{baseUrl}}/api
+
+### Orden normal (calculated total from DB)
+POST {{api}}/orders
+Content-Type: application/json
+
+{
+  "items": [{ "productId": 1, "quantity": 1 }],
+  "clientTotal": 89999.99,
+  "shipping": { "address": "Av. Siempre Viva 123" }
+}
+
+### Orden manipulada (precio 0 enviado por cliente) - debe ser rechazado
+POST {{api}}/orders
+Content-Type: application/json
+
+{
+  "items": [{ "productId": 1, "quantity": 1 }],
+  "clientTotal": 0,
+  "shipping": { "address": "Av. Siempre Viva 123" }
+}

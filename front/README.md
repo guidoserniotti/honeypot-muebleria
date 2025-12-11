@@ -163,3 +163,20 @@ Este software contiene vulnerabilidades intencionalmente. Los autores no se hace
 **¿Listo para hackear? 🎯**
 
 Explora, aprende y mejora tus habilidades de seguridad de manera ética y legal.
+
+## 🔔 Estado Actual del Proyecto (resumen rápido)
+
+- Fecha: 2025-12-07
+- El frontend incluye el formulario de contacto (`ContactForm.jsx`) que envía peticiones `POST` a `http://localhost:3000/api/contacts`.
+- En el backend existe soporte para una tabla `contacts` y endpoints asociados; algunos de esos endpoints son intencionalmente vulnerables a SQL Injection. Durante el desarrollo se exploró añadir un modo de simulación (`?simulate=true`) para inspeccionar la SQL construida sin ejecutarla, pero esa funcionalidad quedó en pausa.
+- Para pruebas y explotación controlada revisa los ejemplos en `Backend/requests/` (por ejemplo `contact-injection.rest`).
+- Antes de probar, inicializa la base de datos y arranca el backend:
+
+```powershell
+cd Backend
+npm run init-db
+npm run dev
+```
+
+- Nota: La base de datos de laboratorio contiene usuarios con contraseñas frágiles y datos de ejemplo. No reutilizar en otros entornos.
+
