@@ -1,27 +1,104 @@
 :root {
-  --color-principal: #f5e6d3;
-  --color-secundario: #8b4513;
-  --color-terciario: #87a96b;
-  --color-acento: #d4a437;
-  --color-fondo: #a0522d;
-  --color-negro: #333;
-  --font-titulares: "Playfair Display", Georgia, serif;
+    --color-principal: #f5e6d3;
+    --color-secundario: #8b4513;
+    --color-terciario: #87a96b;
+    --color-acento: #d4a437;
+    --color-fondo: #a0522d;
+    --color-negro: #333;
+    --font-titulares: "Playfair Display", Georgia, serif;
 }
 
 .contenedor {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 1rem 0;
-  width: 100%;
-  margin: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem 0;
+    width: 100%;
+    margin: 0;
 }
 
 .contenedor h1 {
-  text-align: center;
-  font-family: var(--font-titulares);
-  color: var(--color-secundario);
-  padding: 1rem;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+    text-align: center;
+    font-family: var(--font-titulares);
+    color: var(--color-secundario);
+    padding: 1rem;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Estilos del buscador */
+.search-container {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+    width: 90%;
+    max-width: 800px;
+}
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 250px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.search-button,
+.clear-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.search-button {
+    background-color: var(--color-secundario);
+    color: white;
+}
+
+.search-button:hover:not(:disabled) {
+    background-color: var(--color-fondo);
+}
+
+.search-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.clear-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.clear-button:hover {
+    background-color: #5a6268;
+}
+
+.search-info {
+    color: #495057;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.search-info strong {
+    color: var(--color-secundario);
 }
