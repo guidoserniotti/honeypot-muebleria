@@ -1,5 +1,5 @@
 ### ==============================================
-### 🍯 HONEYPOT - AUTHENTICATION TESTS
+### HONEYPOT - AUTHENTICATION TESTS
 ### ==============================================
 
 @baseUrl = http://localhost:3000

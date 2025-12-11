@@ -1,17 +1,17 @@
-# 🍯 Honeypot Security Lab - Backend
+# Honeypot Security Lab - Backend
 
-## ⚠️ ADVERTENCIA IMPORTANTE
+## ADVERTENCIA IMPORTANTE
 
 **Este es un proyecto educativo que contiene vulnerabilidades INTENCIONALES.**
 
--   ❌ **NO usar en producción**
--   ❌ **NO exponer a internet**
--   ✅ **Solo para entornos de laboratorio aislados**
--   ✅ **Con fines educativos y de investigación en seguridad**
+-   NO usar en producción
+-   NO exponer a internet
+-   Solo para entornos de laboratorio aislados
+-   Con fines educativos y de investigación en seguridad
 
 ---
 
-## 📋 Descripción
+## Descripción
 
 Backend vulnerable diseñado como honeypot/laboratorio de hacking para aprender sobre:
 
@@ -20,9 +20,9 @@ Backend vulnerable diseñado como honeypot/laboratorio de hacking para aprender 
 -   Backdoors en aplicaciones web
 -   Análisis de logs de seguridad
 
-## 🎯 Vulnerabilidades Implementadas
+## Vulnerabilidades Implementadas
 
-### 1. 💉 SQL Injection
+### 1. SQL Injection en Login
 
 **Endpoint vulnerable:** `POST /api/auth/login`
 
@@ -47,7 +47,42 @@ curl -X POST http://localhost:3000/api/auth/login \
   -d '{"username":"'\'' OR '\''1'\''='\''1","password":"anything"}'
 ```
 
-### 2. 🔑 Credenciales Débiles
+### 2. SQL Injection en Formulario de Contacto
+
+**Endpoints vulnerables:** `POST /api/contacts`, `GET /api/contacts`, `DELETE /api/contacts/:id`
+
+El sistema de contactos es completamente vulnerable a inyección SQL mediante concatenación directa de valores:
+
+```javascript
+// CÓDIGO VULNERABLE (intencional)
+const query = `INSERT INTO contacts (nombre, email, mensaje, ip_address) 
+               VALUES ('${name}', '${email}', '${message}', '${ip_address}')`;
+```
+
+**Ejemplos de explotación:**
+
+```bash
+# Inyección en campo nombre
+curl -X POST http://localhost:3000/api/contacts \
+  -H "Content-Type: application/json" \
+  -d '{"name":"test'\'' OR '\''1'\''='\''1","email":"test@test.com","message":"msg"}'
+
+# Búsqueda vulnerable
+curl "http://localhost:3000/api/contacts?search=test'\'' OR '\''1'\''='\''1"
+
+# DELETE masivo
+curl -X DELETE "http://localhost:3000/api/contacts/1 OR 1=1"
+```
+
+**Características de la vulnerabilidad:**
+
+-   Concatenación directa sin prepared statements
+-   Errores SQL expuestos en respuestas
+-   Permite stacked queries (multipleStatements: true)
+-   Sin validación de entrada
+-   Sin sanitización de datos
+
+### 3. Credenciales Débiles
 
 La base de datos contiene múltiples usuarios con contraseñas débiles:
 
@@ -64,7 +99,7 @@ La base de datos contiene múltiples usuarios con contraseñas débiles:
 
 **Nota:** Las contraseñas están almacenadas en **texto plano** (otra vulnerabilidad intencional).
 
-### 3. 🚪 Backdoor - Header Personalizado
+### 4. Backdoor - Header Personalizado
 
 **Header secreto:** `X-AccessDev: Testing-Mode`
 
@@ -106,9 +141,31 @@ curl http://localhost:3000/api/admin/audit-logs?limit=10 \
 -   Variable de entorno `BACKDOOR_DEV_HEADER` en `.env.example`
 -   Mensaje en el endpoint raíz `/` con hint sobre "developer access"
 
+### 5. Configuración Insegura de Base de Datos
+
+**multipleStatements habilitado**
+
+La conexión MySQL está configurada con `multipleStatements: true`, permitiendo la ejecución de múltiples consultas SQL en una sola llamada:
+
+```javascript
+pool = mysql.createPool({
+    // ... otras opciones
+    multipleStatements: true, // INSEGURO en producción
+});
+```
+
+Esto permite ataques de stacked queries:
+
+```bash
+# Inyección con múltiples statements
+curl -X POST http://localhost:3000/api/contacts \
+  -H "Content-Type: application/json" \
+  -d '{"name":"test","email":"test@test.com","message":"msg'\''); DROP TABLE contacts; --"}'
+```
+
 ---
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### Requisitos Previos
 
@@ -169,10 +226,12 @@ npm run init-db
 
 Esto creará:
 
--   8 usuarios con credenciales débiles
--   6 productos de ejemplo
--   3 órdenes de ejemplo
--   Tabla de audit_log
+-   Tabla `users` con 8 usuarios y credenciales débiles
+-   Tabla `products` con productos de ejemplo
+-   Tabla `orders` con órdenes de ejemplo
+-   Tabla `contacts` (vulnerable a SQL injection)
+-   Tabla `order_items` con items de órdenes
+-   Tabla `audit_log` para registros de seguridad
 
 ### Paso 5: Iniciar Servidor
 
@@ -193,9 +252,22 @@ phpMyAdmin en: `http://localhost:8080`
 
 ---
 
-## 🧪 Testing y Explotación
+## Testing y Explotación
 
-### Scripts de Testing Incluidos
+### Archivos de Prueba Incluidos
+
+El directorio `Backend/requests/` contiene archivos REST para testing:
+
+-   `auth.rest` - Autenticación y login
+-   `sql-injection.rest` - Ejemplos de SQL injection en login
+-   `contact-injection.rest` - SQL injection en formulario de contacto
+-   `backdoor.rest` - Uso del backdoor con header secreto
+-   `admin.rest` - Endpoints administrativos
+-   `products.rest` - Operaciones con productos
+-   `orders.rest` - Gestión de órdenes
+-   `complete-tests.rest` - Suite completa de tests
+
+### Scripts de Testing PowerShell
 
 ```bash
 # Test completo de todas las vulnerabilidades
@@ -244,9 +316,26 @@ curl -X POST http://localhost:3000/api/auth/login \
   -d '{"username":"admin'\''--","password":"cualquiercosa"}'
 ```
 
-✅ **Éxito:** Debería devolver token válido sin necesitar la contraseña correcta.
+**Respuesta esperada:** Debería devolver token válido sin necesitar la contraseña correcta.
 
-#### 3. Backdoor Access
+#### 3. SQL Injection en Contactos
+
+```bash
+# Inyección en campo nombre
+curl -X POST http://localhost:3000/api/contacts \
+  -H "Content-Type: application/json" \
+  -d '{"name":"test'\'' OR '\''1'\''='\''1","email":"test@test.com","message":"mensaje de prueba"}'
+
+# Búsqueda vulnerable
+curl "http://localhost:3000/api/contacts?search=test'\'' OR '\''1'\''='\''1"
+
+# DELETE masivo
+curl -X DELETE "http://localhost:3000/api/contacts/1 OR 1=1"
+```
+
+**Respuesta esperada:** Las consultas deberían ejecutarse sin errores, exponiendo la vulnerabilidad.
+
+#### 4. Backdoor Access
 
 ```bash
 # Sin backdoor (debería fallar)
@@ -259,32 +348,44 @@ curl http://localhost:3000/api/admin/users \
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 Backend/
 ├── src/
 │   ├── server.js                 # Servidor Express principal
 │   ├── config/
+│   │   ├── config.js             # Configuración general
 │   │   └── database.js           # Conexión MySQL + funciones query
 │   ├── controllers/
 │   │   ├── authController.js     # Login, Register (VULNERABLE)
-│   │   └── adminController.js    # Endpoints admin
+│   │   ├── adminController.js    # Endpoints admin
+│   │   ├── contactController.js  # CRUD Contactos (VULNERABLE)
+│   │   ├── productController.js  # Gestión de productos
+│   │   └── orderController.js    # Gestión de órdenes
 │   ├── middlewares/
 │   │   ├── authMiddleware.js     # Validación JWT
-│   │   ├── backdoorMiddleware.js # 🚨 BACKDOOR
-│   │   ├── adminGuard.js         # Verificar rol admin
-│   │   ├── logger.js             # Logger de requests
-│   │   └── manejadorCentralizado.js # Error handler
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Product.js
-│   │   └── Order.js
+│   │   ├── backdoorMiddleware.js # Backdoor con header secreto
+│   │   └── adminGuard.js         # Verificar rol admin
 │   ├── routes/
 │   │   ├── authRoutes.js
-│   │   └── adminRoutes.js
-│   └── database/
-│       └── schema.sql             # Schema + seeds vulnerables
+│   │   ├── adminRoutes.js
+│   │   ├── contactRoutes.js      # Rutas vulnerables de contactos
+│   │   ├── productRoutes.js
+│   │   └── orderRoutes.js
+│   ├── database/
+│   │   └── schema.sql             # Schema + seeds vulnerables
+│   └── scripts/
+│       └── initDatabase.js        # Script de inicialización DB
+├── requests/
+│   ├── auth.rest
+│   ├── sql-injection.rest
+│   ├── contact-injection.rest     # Tests de inyección en contactos
+│   ├── backdoor.rest
+│   ├── admin.rest
+│   ├── products.rest
+│   ├── orders.rest
+│   └── complete-tests.rest
 ├── docker-compose.yml
 ├── package.json
 ├── .env.example
@@ -293,61 +394,140 @@ Backend/
 
 ---
 
-## 🔍 Endpoints API
+## Endpoints API
 
 ### Públicos
 
-| Método | Endpoint             | Descripción       | Vulnerable       |
-| ------ | -------------------- | ----------------- | ---------------- |
-| GET    | `/`                  | Info del honeypot | -                |
-| GET    | `/health`            | Health check      | -                |
-| POST   | `/api/auth/login`    | Login             | ✅ SQL Injection |
-| POST   | `/api/auth/register` | Registro          | -                |
+| Método | Endpoint             | Descripción       | Vulnerable    |
+| ------ | -------------------- | ----------------- | ------------- |
+| GET    | `/`                  | Info del honeypot | -             |
+| GET    | `/health`            | Health check      | -             |
+| POST   | `/api/auth/login`    | Login             | SQL Injection |
+| POST   | `/api/auth/register` | Registro          | -             |
 
 ### Protegidos (requieren JWT)
 
 | Método | Endpoint            | Descripción        | Backdoor |
 | ------ | ------------------- | ------------------ | -------- |
-| GET    | `/api/auth/profile` | Perfil del usuario | ❌       |
+| GET    | `/api/auth/profile` | Perfil del usuario | No       |
 
 ### Admin (requieren JWT + rol admin)
 
 | Método | Endpoint                | Descripción      | Backdoor |
 | ------ | ----------------------- | ---------------- | -------- |
-| GET    | `/api/admin/users`      | Lista usuarios   | ✅       |
-| GET    | `/api/admin/stats`      | Estadísticas DB  | ✅       |
-| GET    | `/api/admin/audit-logs` | Logs auditoría   | ✅       |
-| DELETE | `/api/admin/users/:id`  | Eliminar usuario | ✅       |
+| GET    | `/api/admin/users`      | Lista usuarios   | Si       |
+| GET    | `/api/admin/stats`      | Estadísticas DB  | Si       |
+| GET    | `/api/admin/audit-logs` | Logs auditoría   | Si       |
+| DELETE | `/api/admin/users/:id`  | Eliminar usuario | Si       |
+
+### Contactos (VULNERABLES a SQL Injection)
+
+| Método | Endpoint            | Descripción         | Vulnerable    |
+| ------ | ------------------- | ------------------- | ------------- |
+| POST   | `/api/contacts`     | Crear contacto      | SQL Injection |
+| GET    | `/api/contacts`     | Listar contactos    | SQL Injection |
+| GET    | `/api/contacts/:id` | Detalle de contacto | SQL Injection |
+| DELETE | `/api/contacts/:id` | Eliminar contacto   | SQL Injection |
+
+### Productos
+
+| Método | Endpoint            | Descripción       | Vulnerable |
+| ------ | ------------------- | ----------------- | ---------- |
+| GET    | `/api/products`     | Listar productos  | No         |
+| GET    | `/api/products/:id` | Detalle producto  | No         |
+| POST   | `/api/products`     | Crear producto    | No         |
+| PUT    | `/api/products/:id` | Actualizar prod.  | No         |
+| DELETE | `/api/products/:id` | Eliminar producto | No         |
+
+### Órdenes
+
+| Método | Endpoint               | Descripción           | Vulnerable |
+| ------ | ---------------------- | --------------------- | ---------- |
+| POST   | `/api/orders`          | Crear orden           | No         |
+| GET    | `/api/orders/user/:id` | Órdenes de un usuario | No         |
 
 **Nota:** Todos los endpoints admin pueden ser accedidos con el header `X-AccessDev: Testing-Mode`
 
 ---
 
-## 🔔 Estado Actual del Proyecto (resumen rápido)
+## Estado Actual del Proyecto
 
-- Fecha: 2025-12-07
-- El backend está operativo en `http://localhost:3000` y la base de datos puede inicializarse con `npm run init-db`.
-- Se creó una tabla `contacts` y existen endpoints para CRUD de contactos (`/api/contacts`). Estos endpoints son intencionalmente vulnerables a SQL Injection (se construyen consultas mediante concatenación de strings).
-- Durante el desarrollo se exploró añadir un modo de "simulación" (`?simulate=true`) para devolver la consulta SQL construida sin ejecutarla, pero su implementación quedó en pausa. Si necesitas el modo de simulación, se puede añadir posteriormente.
-- Para facilitar pruebas, la conexión MySQL en el entorno de laboratorio puede haber sido configurada con `multipleStatements: true` (esto permite consultas apiladas). Esta opción es insegura fuera de un entorno de laboratorio y se recomienda revertirla si el código se reutiliza.
-- Archivos de prueba y ejemplos de payloads están en `Backend/requests/` (incluye `contact-injection.rest`, `sql-injection.rest`, y scripts PowerShell de prueba).
-- La base de datos de ejemplo se inicializa con varios usuarios administrativos y contraseñas en texto plano (diseñado así para el honeypot). Nunca usar estas credenciales fuera del laboratorio.
+**Última actualización:** Diciembre 2025
 
-### Pendiente / Recomendaciones
+El backend está completamente operativo con las siguientes características:
 
-- Si vas a continuar con ejercicios de inyección en `contacts`, reinicia la DB y el servidor antes de las pruebas:
+### Funcionalidades Implementadas
+
+-   Servidor Express corriendo en `http://localhost:3000`
+-   Base de datos MySQL con Docker Compose
+-   Sistema de autenticación JWT
+-   CRUD completo de productos
+-   Gestión de órdenes de compra
+-   Sistema de contactos (vulnerable)
+-   Auditoría de eventos de seguridad
+
+### Vulnerabilidades Activas
+
+1. **SQL Injection en Login** - Endpoint `/api/auth/login`
+2. **SQL Injection en Contactos** - Todos los endpoints `/api/contacts`
+3. **Backdoor con Header** - Header `X-AccessDev: Testing-Mode`
+4. **Credenciales Débiles** - 8 usuarios con contraseñas en texto plano
+5. **multipleStatements Habilitado** - Permite stacked queries
+
+### Archivos de Prueba Disponibles
+
+Directorio `Backend/requests/`:
+
+-   `auth.rest` - Tests de autenticación
+-   `sql-injection.rest` - Payloads de inyección SQL en login
+-   `contact-injection.rest` - Payloads de inyección en contactos
+-   `backdoor.rest` - Ejemplos de uso del backdoor
+-   `admin.rest` - Endpoints administrativos
+-   `products.rest` - CRUD de productos
+-   `orders.rest` - Gestión de órdenes
+-   `complete-tests.rest` - Suite completa de pruebas
+
+### Scripts PowerShell de Testing
+
+-   `test-final.ps1` - Suite completa de vulnerabilidades
+-   `test-sql-injection.ps1` - Test específico de SQL injection
+-   `test-backdoor.ps1` - Test del backdoor
+-   `test-simple.ps1` - Test rápido de funcionalidad básica
+
+### Configuración de Base de Datos
+
+La base de datos incluye las siguientes tablas:
+
+-   `users` - Usuarios con credenciales débiles
+-   `products` - Catálogo de productos
+-   `orders` - Órdenes de compra
+-   `order_items` - Detalles de órdenes
+-   `contacts` - Formulario de contacto (vulnerable)
+-   `audit_log` - Registros de auditoría
+
+### Recomendaciones de Uso
+
+Para reiniciar el entorno de pruebas:
 
 ```powershell
 cd Backend
+docker-compose down -v
+docker-compose up -d
 npm run init-db
 npm run dev
 ```
 
-- Considerar implementar el modo `?simulate=true` en `POST /api/contacts` para inspeccionar la SQL sin ejecutar consultas destructivas.
-- Después de completar las prácticas, revertir `multipleStatements` y eliminar datos de prueba.
+Para verificar logs de auditoría:
 
+```sql
+SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 20;
+```
 
-## 🛡️ Mecanismos de Seguridad (Débiles Intencionalmente)
+**IMPORTANTE:** Este proyecto contiene vulnerabilidades intencionales. Nunca exponerlo a internet ni usar en entornos de producción.
+
+---
+
+## Mecanismos de Seguridad (Débiles Intencionalmente)
 
 ### 1. Autenticación JWT
 
@@ -364,20 +544,27 @@ npm run dev
 
 ### 3. Rate Limiting
 
--   ❌ **NO IMPLEMENTADO** (vulnerabilidad intencional)
+-   NO IMPLEMENTADO (vulnerabilidad intencional)
 
 ### 4. Password Hashing
 
--   ❌ **NO IMPLEMENTADO** - Contraseñas en texto plano
+-   NO IMPLEMENTADO - Contraseñas en texto plano
 
 ### 5. Prepared Statements
 
 -   Implementados en `executeQuery()` (seguro)
--   **NO** usados en `executeRawQuery()` usado en login (vulnerable)
+-   NO usados en login y contactos (vulnerable)
+-   `executeRawQuery()` permite SQL injection directo
+
+### 6. Validación de Entrada
+
+-   NO IMPLEMENTADA en endpoints vulnerables
+-   Sin sanitización de datos
+-   Sin escape de caracteres especiales
 
 ---
 
-## 📊 Auditoría y Logs
+## Auditoría y Logs
 
 Todas las acciones importantes se registran en la tabla `audit_log`:
 
@@ -398,12 +585,12 @@ Campos registrados:
 
 -   `user_login` - Login exitoso
 -   `user_registered` - Nuevo usuario registrado
--   `backdoor_access` - 🚨 Acceso mediante backdoor
+-   `backdoor_access` - Acceso mediante backdoor
 -   `profile_accessed` - Acceso al perfil
 
 ---
 
-## 🎓 Uso Educativo
+## Uso Educativo
 
 ### Escenarios de Aprendizaje
 
@@ -412,26 +599,30 @@ Campos registrados:
     - Identificar vectores de SQL Injection
     - Explotar autenticación débil
     - Buscar backdoors y headers secretos
+    - Practicar técnicas de enumeración
 
 2. **Análisis Forense:**
 
     - Revisar logs de `audit_log`
     - Identificar accesos no autorizados
     - Rastrear uso del backdoor
+    - Correlacionar eventos de seguridad
 
 3. **Hardening de Aplicaciones:**
 
     - Comparar código vulnerable vs código seguro
     - Implementar prepared statements
     - Agregar validación de inputs
+    - Configurar rate limiting
 
 4. **Red Team / Blue Team:**
     - Red Team: Explotar todas las vulnerabilidades
     - Blue Team: Detectar y mitigar ataques en logs
+    - Documentar hallazgos y recomendaciones
 
 ---
 
-## 🔧 Comandos Útiles
+## Comandos Útiles
 
 ```bash
 # Ver logs del servidor
@@ -457,7 +648,7 @@ docker exec -it honeypot-mysql mysql -u root -pvulnerable123 -e "SELECT * FROM h
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Puerto 3000 ya en uso
 
@@ -488,25 +679,42 @@ docker-compose restart mysql
 -   Esperar 3-5 segundos después de iniciar antes de ejecutar tests
 -   Verificar que el puerto sea 3000
 
+### Errores de SQL Injection no funcionan
+
+-   Verificar que `multipleStatements: true` esté habilitado en `database.js`
+-   Revisar logs del servidor para ver queries ejecutadas
+-   Asegurarse de escapar comillas correctamente en curl/PowerShell
+
+### Backdoor no funciona
+
+-   Verificar el header exacto: `X-AccessDev: Testing-Mode`
+-   Usar mayúsculas y minúsculas correctamente
+-   Revisar que el middleware esté configurado en las rutas admin
+
 ---
 
-## 📚 Referencias
+## Referencias
 
 -   [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
 -   [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
 -   [Node.js Security Best Practices](https://nodejs.org/en/docs/guides/security/)
 -   [MySQL Prepared Statements](https://dev.mysql.com/doc/refman/8.0/en/sql-prepared-statements.html)
+-   [Express.js Security Best Practices](https://expressjs.com/en/advanced/best-practice-security.html)
 
 ---
 
-## 📝 Licencia
+## Licencia
 
 Este proyecto es solo para fines educativos. No nos hacemos responsables del mal uso de este código.
 
 ---
 
-## ✨ Autor
+## Autores
 
-Proyecto creado como laboratorio de seguridad informática para aprendizaje de vulnerabilidades web comunes.
+-   Serniotti, Guido
+-   Ibarra, Álvaro
+-   Zegatti, Tomás
 
-**¡IMPORTANTE:** Este código contiene vulnerabilidades intencionales. **NUNCA** usar en producción o exponer a internet.
+(Proyecto creado como laboratorio de seguridad informática para aprendizaje de vulnerabilidades web comunes.)
+
+**IMPORTANTE:** Este código contiene vulnerabilidades intencionales. **NUNCA** usar en producción o exponer a internet.

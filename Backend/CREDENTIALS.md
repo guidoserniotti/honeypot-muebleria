@@ -1,6 +1,6 @@
-# 🔑 Credenciales y Configuración - Referencia Rápida
+# Credenciales y Configuración - Referencia Rápida
 
-## 🎯 URLs del Sistema
+## URLs del Sistema
 
 | Servicio    | URL                   | Descripción             |
 | ----------- | --------------------- | ----------------------- |
@@ -11,7 +11,7 @@
 
 ---
 
-## 👥 Usuarios de la Aplicación
+## Usuarios de la Aplicación
 
 ### Usuarios Admin (Privilegios Completos)
 
@@ -71,7 +71,7 @@ Estado: Inactivo
 
 ---
 
-## 🗄️ Credenciales de Base de Datos
+## Credenciales de Base de Datos
 
 ### MySQL Root
 
@@ -104,7 +104,7 @@ DB_NAME = honeypot_db;
 
 ---
 
-## 🚪 Backdoor Secret
+## Backdoor Secret
 
 ### Header de Bypass
 
@@ -141,18 +141,18 @@ Invoke-RestMethod -Uri "http://localhost:3000/api/admin/users" -Headers $headers
 
 ---
 
-## 🔐 JWT Configuration
+## JWT Configuration
 
 ```
 JWT_SECRET=weak_secret_key_123
 JWT_EXPIRES_IN=24h
 ```
 
-**⚠️ Warning:** Secret intencionalmente débil para facilitar cracking en ejercicios de pentesting.
+**Warning:** Secret intencionalmente débil para facilitar cracking en ejercicios de pentesting.
 
 ---
 
-## 💉 SQL Injection Payloads
+## SQL Injection Payloads
 
 ### Login Bypass
 
@@ -185,7 +185,7 @@ Password: x
 
 ---
 
-## 🌐 CORS Configuration
+## CORS Configuration
 
 ```
 CORS_ORIGIN=http://localhost:5173
@@ -195,7 +195,7 @@ Permite requests desde el frontend React.
 
 ---
 
-## 📋 Environment Variables (.env)
+## Environment Variables (.env)
 
 ```env
 # Server
@@ -225,7 +225,7 @@ LOG_LEVEL=debug
 
 ---
 
-## 🐳 Docker Configuration
+## Docker Configuration
 
 ### docker-compose.yml Services
 
@@ -267,7 +267,7 @@ docker exec honeypot-mysql mysql -u root -pvulnerable123 -e "SELECT username, em
 
 ---
 
-## 🧪 Testing Quick Reference
+## Testing Quick Reference
 
 ### Test Login Normal
 
@@ -313,7 +313,7 @@ curl http://localhost:3000/health
 
 ---
 
-## 📊 Database Tables
+## Database Tables
 
 ### users
 
@@ -324,7 +324,7 @@ Columns:
 - id (INT, PRIMARY KEY, AUTO_INCREMENT)
 - username (VARCHAR(50), UNIQUE)
 - email (VARCHAR(100), UNIQUE)
-- password (VARCHAR(255)) -- ⚠️ Texto plano
+- password (VARCHAR(255)) -- Texto plano
 - role (ENUM('admin', 'user'))
 - is_active (BOOLEAN)
 - created_at (TIMESTAMP)
@@ -362,13 +362,13 @@ SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 10;
 Registra:
 - user_login
 - user_registered
-- backdoor_access ⚠️
+- backdoor_access
 - profile_accessed
 ```
 
 ---
 
-## 🔍 Queries SQL Útiles
+## Queries SQL Útiles
 
 ### Ver todos los usuarios con sus roles
 
@@ -430,7 +430,7 @@ SET login_attempts = 0;
 
 ---
 
-## 🚀 Comandos de Inicio Rápido
+## Comandos de Inicio Rápido
 
 ### Backend
 
@@ -470,7 +470,7 @@ npm run build
 
 ---
 
-## 📱 API Endpoints Rápidos
+## API Endpoints Rápidos
 
 | Método | Endpoint                | Auth      | Backdoor | Descripción            |
 | ------ | ----------------------- | --------- | -------- | ---------------------- |
@@ -479,14 +479,14 @@ npm run build
 | POST   | `/api/auth/login`       | No        | No       | Login (vulnerable SQL) |
 | POST   | `/api/auth/register`    | No        | No       | Registro               |
 | GET    | `/api/auth/profile`     | JWT       | No       | Perfil usuario         |
-| GET    | `/api/admin/users`      | JWT Admin | ✅       | Listar usuarios        |
-| GET    | `/api/admin/stats`      | JWT Admin | ✅       | Estadísticas           |
-| GET    | `/api/admin/audit-logs` | JWT Admin | ✅       | Logs auditoría         |
-| DELETE | `/api/admin/users/:id`  | JWT Admin | ✅       | Eliminar usuario       |
+| GET    | `/api/admin/users`      | JWT Admin | Sí       | Listar usuarios        |
+| GET    | `/api/admin/stats`      | JWT Admin | Sí       | Estadísticas           |
+| GET    | `/api/admin/audit-logs` | JWT Admin | Sí       | Logs auditoría         |
+| DELETE | `/api/admin/users/:id`  | JWT Admin | Sí       | Eliminar usuario       |
 
 ---
 
-## 🎯 Checklist de Configuración
+## Checklist de Configuración
 
 ### Primera vez
 
@@ -516,7 +516,7 @@ npm run build
 
 ---
 
-## 💾 Backup y Reset
+## Backup y Reset
 
 ### Backup de Base de Datos
 
@@ -548,7 +548,7 @@ npm run init-db
 
 ---
 
-## 📞 Contactos de Referencia
+## Contactos de Referencia
 
 -   README.md - Documentación completa
 -   EXPLOITATION_GUIDE.md - Guía de hacking
@@ -557,6 +557,6 @@ npm run init-db
 
 ---
 
-**🍯 Happy Hacking! 🔓**
+**Happy Hacking!**
 
 _Recuerda: Solo para fines educativos en entornos aislados._

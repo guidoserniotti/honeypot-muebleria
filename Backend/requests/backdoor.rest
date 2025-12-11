@@ -1,5 +1,5 @@
 ### ==============================================
-### 🚪 HONEYPOT - BACKDOOR TESTS
+### HONEYPOT - BACKDOOR TESTS
 ### ==============================================
 
 @baseUrl = http://localhost:3000

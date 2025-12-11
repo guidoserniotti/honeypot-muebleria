@@ -1,12 +1,12 @@
-# 📚 Documentación del Proyecto - Índice
+# Documentación del Proyecto - Índice
 
 Bienvenido al **Honeypot Security Lab**. Esta es tu guía de navegación para toda la documentación.
 
 ---
 
-## 🗺️ Mapa de Documentación
+## Mapa de Documentación
 
-### 📖 Documentos Principales
+### Documentos Principales
 
 | Archivo                                            | Propósito                        | Para Quién                    |
 | -------------------------------------------------- | -------------------------------- | ----------------------------- |
@@ -18,21 +18,21 @@ Bienvenido al **Honeypot Security Lab**. Esta es tu guía de navegación para to
 
 ---
 
-## 🎯 ¿Qué quieres hacer?
+## ¿Qué quieres hacer?
 
-### 🚀 Quiero Empezar Rápido
+### Quiero Empezar Rápido
 
 ➡️ Lee: **[CREDENTIALS.md](CREDENTIALS.md)** sección "Comandos de Inicio Rápido"
 
 ```bash
-cd ENTREGA/Backend
+cd Backend
 npm install
 docker-compose up -d
 npm run init-db
 npm run dev
 ```
 
-### 📚 Quiero Entender el Proyecto
+### Quiero Entender el Proyecto
 
 ➡️ Lee: **[PROYECTO_RESUMEN.md](PROYECTO_RESUMEN.md)**
 
@@ -42,7 +42,7 @@ npm run dev
 -   Tecnologías usadas
 -   Estadísticas
 
-### 🔧 Quiero Configurar e Instalar
+### Quiero Configurar e Instalar
 
 ➡️ Lee: **[README.md](README.md)** sección "Instalación y Configuración"
 
@@ -63,7 +63,7 @@ npm run dev
 -   Scripts de automatización
 -   Ejercicios propuestos
 
-### 🔑 Necesito Credenciales o Configuración
+### Necesito Credenciales o Configuración
 
 ➡️ Lee: **[CREDENTIALS.md](CREDENTIALS.md)**
 
@@ -74,7 +74,7 @@ npm run dev
 -   URLs de servicios
 -   Comandos útiles
 
-### 🧪 Quiero Testear las Vulnerabilidades
+### Quiero Testear las Vulnerabilidades
 
 ➡️ Ejecuta los scripts de testing:
 
@@ -91,7 +91,7 @@ npm run dev
 
 ➡️ O lee: **[EXPLOITATION_GUIDE.md](EXPLOITATION_GUIDE.md)** sección "Testing Manual"
 
-### 🛠️ Quiero Ver el Código
+### Quiero Ver el Código
 
 ➡️ Archivos clave:
 
@@ -101,7 +101,7 @@ npm run dev
 -   **Schema:** `src/database/schema.sql`
 -   **Server:** `src/server.js`
 
-### 📊 Quiero Ver la Base de Datos
+### Quiero Ver la Base de Datos
 
 ➡️ Opciones:
 
@@ -118,7 +118,7 @@ npm run dev
 
 3. **Ver queries útiles:** [CREDENTIALS.md](CREDENTIALS.md) sección "Queries SQL Útiles"
 
-### 🎓 Quiero Aprender sobre Vulnerabilidades
+### Quiero Aprender sobre Vulnerabilidades
 
 ➡️ Lee en orden:
 
@@ -128,7 +128,7 @@ npm run dev
 4. Intenta los ejercicios propuestos
 5. Lee la sección "Mitigaciones" para aprender a arreglarlas
 
-### 🐛 Tengo un Problema
+### Tengo un Problema
 
 ➡️ Lee: **[README.md](README.md)** sección "Troubleshooting"
 
@@ -139,7 +139,7 @@ Problemas comunes:
 -   Error ECONNREFUSED
 -   Docker no inicia
 
-### 📖 Quiero Ver los Endpoints de la API
+### Quiero Ver los Endpoints de la API
 
 ➡️ Lee: **[README.md](README.md)** sección "Endpoints API"
 
@@ -147,90 +147,90 @@ O referencia rápida: **[CREDENTIALS.md](CREDENTIALS.md)** sección "API Endpoin
 
 ---
 
-## 📋 Contenido por Documento
+## Contenido por Documento
 
 ### README.md
 
--   ⚠️ Advertencia importante
--   📋 Descripción del proyecto
--   🎯 Vulnerabilidades detalladas
+-   Advertencia importante
+-   Descripción del proyecto
+-   Vulnerabilidades detalladas
     -   SQL Injection
     -   Credenciales débiles
     -   Backdoor
--   🚀 Instalación completa
--   🧪 Testing
--   📁 Estructura del proyecto
--   🔍 Endpoints API
--   🛡️ Mecanismos de seguridad
--   📊 Auditoría y logs
--   🎓 Uso educativo
--   🔧 Comandos útiles
--   🐛 Troubleshooting
--   📚 Referencias
+-   Instalación completa
+-   Testing
+-   Estructura del proyecto
+-   Endpoints API
+-   Mecanismos de seguridad
+-   Auditoría y logs
+-   Uso educativo
+-   Comandos útiles
+-   Troubleshooting
+-   Referencias
 
 ### EXPLOITATION_GUIDE.md
 
--   🔍 Reconocimiento inicial
--   💉 Explotación SQL Injection
+-   Reconocimiento inicial
+-   Explotación SQL Injection
     -   Comment-based bypass
     -   Always true condition
     -   UNION injection
     -   Enumeración de usuarios
--   🚪 Descubrimiento del backdoor
+-   Descubrimiento del backdoor
     -   White box
     -   Black box (fuzzing)
--   🔓 Uso del backdoor
+-   Uso del backdoor
     -   Listar usuarios
     -   Obtener estadísticas
     -   Acceder a logs
     -   Eliminar usuarios
--   ⬆️ Escalación de privilegios
--   🕵️ Post-explotación
+-   Escalación de privilegios
+-   Post-explotación
     -   Dump de BD
     -   Análisis de logs
     -   Persistencia
     -   Borrar rastros
--   🛠️ Scripts de automatización (Python, PowerShell)
--   🎓 Ejercicios propuestos (3 niveles)
--   🛡️ Mitigaciones
+-   Scripts de automatización (Python, PowerShell)
+-   Ejercicios propuestos (3 niveles)
+-   Mitigaciones
 
 ### PROYECTO_RESUMEN.md
 
--   📌 Descripción general
--   ✅ Objetivos completados
--   📂 Estructura de archivos
--   🚀 Inicio rápido
--   🧪 Testing
--   🎯 Vulnerabilidades (severidad CVSS)
--   📊 Estadísticas
--   📚 Documentación
--   🎓 Uso educativo
--   ⚠️ Advertencias
--   🔧 Tecnologías
--   📈 Siguientes pasos
--   🏆 Logros
+-   Descripción general
+-   Objetivos completados
+-   Estructura de archivos
+-   Inicio rápido
+-   Testing
+-   Vulnerabilidades (severidad CVSS)
+-   Estadísticas
+-   Documentación
+-   Uso educativo
+-   Advertencias
+-   Tecnologías
+-   Siguientes pasos
+-   Logros
 
 ### CREDENTIALS.md
 
--   🎯 URLs del sistema
--   👥 8 usuarios (admin y normales)
--   🗄️ Credenciales MySQL
--   🚪 Backdoor secret
--   💉 SQL Injection payloads
--   🌐 CORS config
--   📋 Variables de entorno
--   🐳 Docker commands
--   🧪 Tests rápidos
--   📊 Database tables
--   🔍 Queries SQL útiles
--   🚀 Comandos de inicio
--   📱 API endpoints
--   🎯 Checklist de configuración
--   💾 Backup y reset
+-   URLs del sistema
+-   8 usuarios (admin y normales)
+-   Credenciales MySQL
+-   Backdoor secret
+-   SQL Injection payloads
+-   CORS config
+-   Variables de entorno
+-   Docker commands
+-   Tests rápidos
+-   Database tables
+-   Queries SQL útiles
+-   Comandos de inicio
+-   API endpoints
+-   Checklist de configuración
+-   Backup y reset
 
 ---
 
-## 🎓 Rutas de Aprendizaje Sugeridas
+## Rutas de Aprendizaje Sugeridas
 
 ### Para Principiantes
 
@@ -267,7 +267,7 @@ O referencia rápida: **[CREDENTIALS.md](CREDENTIALS.md)** sección "API Endpoin
 
 ---
 
-## 🔗 Enlaces Rápidos
+## Enlaces Rápidos
 
 ### Servicios en Ejecución
 
@@ -278,10 +278,10 @@ O referencia rápida: **[CREDENTIALS.md](CREDENTIALS.md)** sección "API Endpoin
 
 ### Repositorio
 
--   Código Backend: `ENTREGA/Backend/src/`
--   Código Frontend: `ENTREGA/front/src/`
--   Schema BD: `ENTREGA/Backend/src/database/schema.sql`
--   Docker: `ENTREGA/Backend/docker-compose.yml`
+-   Código Backend: `Backend/src/`
+-   Código Frontend: `front/src/`
+-   Schema BD: `Backend/src/database/schema.sql`
+-   Docker: `Backend/docker-compose.yml`
 
 ### Archivos de Testing
 
@@ -292,7 +292,7 @@ O referencia rápida: **[CREDENTIALS.md](CREDENTIALS.md)** sección "API Endpoin
 
 ---
 
-## 📞 ¿Necesitas Ayuda?
+## ¿Necesitas Ayuda?
 
 ### Problemas Técnicos
 
@@ -312,47 +312,47 @@ O referencia rápida: **[CREDENTIALS.md](CREDENTIALS.md)** sección "API Endpoin
 
 ---
 
-## ✅ Checklist de Primera Lectura
+## Checklist de Primera Lectura
 
--   [ ] Leer este INDEX.md
--   [ ] Leer PROYECTO_RESUMEN.md para contexto
--   [ ] Revisar CREDENTIALS.md para credenciales
--   [ ] Seguir README.md para instalación
--   [ ] Ejecutar test-final.ps1 para verificar
--   [ ] Explorar EXPLOITATION_GUIDE.md para aprender a hackear
+-   Leer este INDEX.md
+-   Leer PROYECTO_RESUMEN.md para contexto
+-   Revisar CREDENTIALS.md para credenciales
+-   Seguir README.md para instalación
+-   Ejecutar test-final.ps1 para verificar
+-   Explorar EXPLOITATION_GUIDE.md para aprender a hackear
 
 ---
 
-## 🎯 Objetivos de Aprendizaje
+## Objetivos de Aprendizaje
 
 Después de trabajar con este honeypot deberías poder:
 
-✅ Identificar y explotar SQL Injection
-✅ Entender autenticación JWT
-✅ Descubrir backdoors en aplicaciones
-✅ Analizar logs de auditoría
-✅ Escalar privilegios
-✅ Implementar mitigaciones de seguridad
-✅ Documentar hallazgos de pentesting
-✅ Usar herramientas como curl, MySQL CLI, Docker
-✅ Automatizar exploits con scripts
-✅ Comprender diferencia entre código vulnerable y seguro
+-   Identificar y explotar SQL Injection
+-   Entender autenticación JWT
+-   Descubrir backdoors en aplicaciones
+-   Analizar logs de auditoría
+-   Escalar privilegios
+-   Implementar mitigaciones de seguridad
+-   Documentar hallazgos de pentesting
+-   Usar herramientas como curl, MySQL CLI, Docker
+-   Automatizar exploits con scripts
+-   Comprender diferencia entre código vulnerable y seguro
 
 ---
 
-## 🏁 Empezar Ahora
+## Empezar Ahora
 
 **Recomendación:** Comienza leyendo **[PROYECTO_RESUMEN.md](PROYECTO_RESUMEN.md)** para tener una visión general, luego salta a **[CREDENTIALS.md](CREDENTIALS.md)** para iniciar el sistema.
 
 ```bash
 # Inicio rápido (3 comandos)
-cd ENTREGA/Backend
+cd Backend
 docker-compose up -d && npm install && npm run init-db
 npm run dev
 ```
 
-**¡Bienvenido al mundo del hacking ético! 🍯🔓**
+**¡Bienvenido al mundo del hacking ético!**
 
 ---
 
-_Última actualización: Diciembre 2024_
+_Última actualización: Diciembre 2025_

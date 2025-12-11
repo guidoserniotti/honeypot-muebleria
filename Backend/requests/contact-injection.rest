@@ -1,5 +1,5 @@
 ### SQL Injection - Contact Endpoints (Frontend + REST Client)
-### ⚠️ VULNERABLE ENDPOINTS FOR TESTING
+### VULNERABLE ENDPOINTS FOR TESTING
 ### Estos payloads funcionan tanto desde el formulario web como desde REST Client
 
 # Variables

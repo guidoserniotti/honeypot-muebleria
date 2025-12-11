@@ -1,6 +1,6 @@
-# 🍯 Honeypot Backend - MySQL Configuration
+# Honeypot Backend - MySQL Configuration
 
-## ✅ Paso 2 Completado: MySQL Configurado
+## Paso 2 Completado: MySQL Configurado
 
 ### Archivos Creados:
 
@@ -14,11 +14,11 @@
 
 **Tablas creadas:**
 
--   ✅ `users` (8 usuarios con contraseñas en texto plano)
--   ✅ `products` (6 productos de mueblería)
--   ✅ `orders` (3 órdenes de ejemplo)
--   ✅ `order_items` (4 items de órdenes)
--   ✅ `audit_log` (para tracking de ataques)
+-   `users` (8 usuarios con contraseñas en texto plano)
+-   `products` (6 productos de mueblería)
+-   `orders` (3 órdenes de ejemplo)
+-   `order_items` (4 items de órdenes)
+-   `audit_log` (para tracking de ataques)
 
 **Credenciales Admin Vulnerables:**
 
@@ -32,8 +32,8 @@ service_account / ServicePass123
 
 ### Docker Services:
 
--   ✅ MySQL 8.0 corriendo en `localhost:3306`
--   ✅ phpMyAdmin en `http://localhost:8080`
+-   MySQL 8.0 corriendo en `localhost:3306`
+-   phpMyAdmin en `http://localhost:8080`
 
 ### Comandos Útiles:
 
@@ -63,4 +63,4 @@ docker-compose down
 
 ---
 
-**Estado: MySQL completamente funcional y listo para ataques! 🎯**
+**Estado: MySQL completamente funcional y listo para ataques.**

@@ -1,4 +1,4 @@
-# 🚀 Quick Start - Honeypot Frontend
+# Quick Start - Honeypot Frontend
 
 ## Instalación Rápida
 
@@ -12,7 +12,7 @@ npm run dev
 
 El frontend estará corriendo en: `http://localhost:5173`
 
-## 📋 Comandos Disponibles
+## Comandos Disponibles
 
 ```bash
 npm run dev      # Servidor de desarrollo con hot reload
@@ -21,7 +21,7 @@ npm run preview  # Previsualizar build de producción
 npm run lint     # Ejecutar ESLint
 ```
 
-## 🔍 Primeros Pasos para Exploración
+## Primeros Pasos para Exploración
 
 ### 1. Revisar el código fuente del HTML
 
@@ -51,7 +51,7 @@ Archivo: `src/service/api.js`
 -   Buscar la función `getAuthHeaders()`
 -   Ver cómo se agrega el header secreto
 
-## 🎯 Vulnerabilidades a Explorar
+## Vulnerabilidades a Explorar
 
 1. **Header Backdoor**: `X-AccessDev: Testing-Mode`
 2. **Variables de entorno**: `.env` con configuración sensible
@@ -59,7 +59,7 @@ Archivo: `src/service/api.js`
 4. **LocalStorage**: Tokens almacenados inseguramente
 5. **Client-side auth**: Rutas protegidas solo en frontend
 
-## 🐳 Próximos Pasos
+## Próximos Pasos
 
 El backend estará disponible próximamente con:
 
@@ -68,23 +68,23 @@ El backend estará disponible próximamente con:
 -   Credenciales débiles (admin/admin)
 -   Docker Compose para ambiente aislado
 
-## 📚 Documentación Completa
+## Documentación Completa
 
 -   `README.md` - Documentación completa del proyecto
 -   `VULNERABILITIES.md` - Lista detallada de vulnerabilidades
 -   `../backend/README.md` - Documentación del backend (próximamente)
 
-## ⚠️ Recordatorio de Seguridad
+## Recordatorio de Seguridad
 
 Este es un **HONEYPOT EDUCATIVO** con vulnerabilidades intencionales.
 
--   ❌ NO usar en producción
--   ❌ NO exponer a internet
--   ✅ Solo para aprendizaje
--   ✅ Usar en ambiente Docker aislado
+-   NO usar en producción
+-   NO exponer a internet
+-   Solo para aprendizaje
+-   Usar en ambiente Docker aislado
 
 ---
 
-**¿Listo para explorar?** 🕵️
+**¿Listo para explorar?**
 
 Comienza revisando el archivo `index.html` para encontrar tu primera pista...

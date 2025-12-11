@@ -1,12 +1,12 @@
-# 🔌 Guía de Conexión Frontend-Backend
+# Guía de Conexión Frontend-Backend
 
-## ✅ Verificación Completada
+## Verificación Completada
 
 El backend está correctamente configurado y funcionando. Los archivos `.rest` en la carpeta `requests/` están listos para usar.
 
 ---
 
-## 🎯 Usuarios Disponibles para Login
+## Usuarios Disponibles para Login
 
 Todos estos usuarios están en `schema.sql` y pueden usarse desde el frontend:
 
@@ -52,7 +52,7 @@ password: "guest";
 
 ---
 
-## 🔧 Configuración del Frontend
+## Configuración del Frontend
 
 ### 1. Archivo `.env` del Frontend
 
@@ -116,7 +116,7 @@ const data = await response.json();
 
 ---
 
-## 🧪 Testing desde Frontend
+## Testing desde Frontend
 
 ### Opción 1: Usar los archivos .rest
 
@@ -135,10 +135,10 @@ cd Backend
 
 Este script verifica:
 
--   ✅ Backend respondiendo
--   ✅ Login funciona con admin/admin
--   ✅ SQL Injection funciona
--   ✅ Backdoor funciona
+-   Backend respondiendo
+-   Login funciona con admin/admin
+-   SQL Injection funciona
+-   Backdoor funciona
 
 ### Opción 3: Desde el navegador/Postman
 
@@ -156,7 +156,7 @@ Content-Type: application/json
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Error: "Network Error" o "Failed to fetch"
 
@@ -172,7 +172,7 @@ npm run dev
 Verificar que veas:
 
 ```
-🚀 Server running on: http://localhost:3000
+Server running on: http://localhost:3000
 ```
 
 ### Error: "Invalid credentials" con credenciales correctas
@@ -216,7 +216,7 @@ CORS_ORIGIN=http://localhost:5173
 
 ---
 
-## 📝 Ejemplos de Código para el Frontend
+## Ejemplos de Código para el Frontend
 
 ### Login Service (service/login.jsx)
 
@@ -328,14 +328,14 @@ const LoginForm = () => {
 
 ---
 
-## 🎯 Casos de Prueba Recomendados
+## Casos de Prueba Recomendados
 
 ### Test 1: Login Admin
 
 ```
 Username: admin
 Password: admin
-Resultado esperado: ✅ Login exitoso, token recibido
+Resultado esperado: Login exitoso, token recibido
 ```
 
 ### Test 2: Login Usuario Normal
@@ -343,7 +343,7 @@ Resultado esperado: ✅ Login exitoso, token recibido
 ```
 Username: user
 Password: user123
-Resultado esperado: ✅ Login exitoso, rol "user"
+Resultado esperado: Login exitoso, rol "user"
 ```
 
 ### Test 3: Credenciales Incorrectas
@@ -351,7 +351,7 @@ Resultado esperado: ✅ Login exitoso, rol "user"
 ```
 Username: admin
 Password: wrongpassword
-Resultado esperado: ❌ Error "Invalid credentials"
+Resultado esperado: Error "Invalid credentials"
 ```
 
 ### Test 4: Usuario Inexistente
@@ -359,7 +359,7 @@ Resultado esperado: ❌ Error "Invalid credentials"
 ```
 Username: noexiste
 Password: test123
-Resultado esperado: ❌ Error "Invalid credentials"
+Resultado esperado: Error "Invalid credentials"
 ```
 
 ### Test 5: SQL Injection desde Frontend
@@ -367,21 +367,21 @@ Resultado esperado: ❌ Error "Invalid credentials"
 ```
 Username: admin'--
 Password: cualquiercosa
-Resultado esperado: ✅ Login exitoso (VULNERABLE!)
+Resultado esperado: Login exitoso (VULNERABLE!)
 ```
 
 ---
 
-## 📊 Checklist de Verificación
+## Checklist de Verificación
 
 Antes de usar el frontend, asegurar que:
 
--   [ ] Backend está corriendo en `http://localhost:3000`
--   [ ] Docker MySQL está corriendo (`docker ps`)
--   [ ] Base de datos está inicializada (`npm run init-db`)
--   [ ] Archivo `.env` del frontend tiene `VITE_API_URL=http://localhost:3000/api`
--   [ ] CORS está configurado en backend para `http://localhost:5173`
--   [ ] Los 8 usuarios existen en la BD (verificar en phpMyAdmin o MySQL)
+-   Backend está corriendo en `http://localhost:3000`
+-   Docker MySQL está corriendo (`docker ps`)
+-   Base de datos está inicializada (`npm run init-db`)
+-   Archivo `.env` del frontend tiene `VITE_API_URL=http://localhost:3000/api`
+-   CORS está configurado en backend para `http://localhost:5173`
+-   Los 8 usuarios existen en la BD (verificar en phpMyAdmin o MySQL)
 
 ### Comandos de Verificación:
 
@@ -400,7 +400,7 @@ docker exec -it honeypot-mysql mysql -u root -pvulnerable123 -e "SELECT username
 
 ---
 
-## 🚀 Iniciar Todo el Sistema
+## Iniciar Todo el Sistema
 
 ### Terminal 1: Backend
 
@@ -411,7 +411,7 @@ npm run init-db
 npm run dev
 ```
 
-Esperar a ver: `🍯 Honeypot ready for exploitation!`
+Esperar a ver: `Honeypot ready for exploitation!`
 
 ### Terminal 2: Frontend (opcional)
 
@@ -431,7 +431,7 @@ cd Backend
 
 ---
 
-## 📁 Archivos .rest Disponibles
+## Archivos .rest Disponibles
 
 ```
 Backend/requests/
@@ -445,7 +445,7 @@ Backend/requests/
 
 ---
 
-## ✨ Siguiente Paso
+## Siguiente Paso
 
 1. **Iniciar backend:** `npm run dev`
 2. **Abrir** `requests/auth.rest` en VS Code
@@ -462,4 +462,4 @@ Contraseña: admin
 
 ---
 
-**¡El sistema está listo para usar! 🍯✅**
+**El sistema está listo para usar.**

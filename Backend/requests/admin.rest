@@ -1,5 +1,5 @@
 ### ==============================================
-### 👑 HONEYPOT - ADMIN ENDPOINTS (Con JWT)
+### HONEYPOT - ADMIN ENDPOINTS (Con JWT)
 ### ==============================================
 
 @baseUrl = http://localhost:3000
@@ -29,7 +29,7 @@ Content-Type: application/json
 ### =====================================================
 ### PASO 2: USAR ENDPOINTS ADMIN CON TOKEN
 ### =====================================================
-### ⚠️ REEMPLAZA "YOUR_JWT_TOKEN" con el token del login
+### REEMPLAZA "YOUR_JWT_TOKEN" con el token del login
 
 @token = YOUR_JWT_TOKEN
 

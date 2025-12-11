@@ -1,5 +1,5 @@
 ### ==============================================
-### 🚨 HONEYPOT - SQL INJECTION TESTS
+### HONEYPOT - SQL INJECTION TESTS
 ### ==============================================
 
 @baseUrl = http://localhost:3000

@@ -1,10 +1,10 @@
-# 📧 Credenciales para Login con Email
+# Credenciales para Login con Email
 
-## 🎯 Usuarios Disponibles (schema.sql)
+## Usuarios Disponibles (schema.sql)
 
 Todos estos usuarios pueden usar **email** o **username** para login.
 
-### 👑 Usuarios Admin
+### Usuarios Admin
 
 ```javascript
 // Usuario 1 - Super Admin
@@ -28,7 +28,7 @@ email: "service@honeypot.com";
 password: "ServicePass123";
 ```
 
-### 👤 Usuarios Normales
+### Usuarios Normales
 
 ```javascript
 // Usuario 6 - User
@@ -46,7 +46,7 @@ password: "guest";
 
 ---
 
-## 🔧 Uso desde el Frontend
+## Uso desde el Frontend
 
 ### Ejemplo 1: Login con Admin
 
@@ -94,7 +94,7 @@ password: "cualquiercosa"
 
 ---
 
-## ✅ Formato de Request
+## Formato de Request
 
 El backend ahora acepta **3 formatos**:
 
@@ -128,7 +128,7 @@ El backend ahora acepta **3 formatos**:
 
 ---
 
-## 🧪 Testing Rápido
+## Testing Rápido
 
 ### Desde VS Code REST Client
 
@@ -164,7 +164,7 @@ Invoke-RestMethod -Uri "http://localhost:3000/api/auth/login" `
 
 ---
 
-## 📊 Tabla Completa de Credenciales
+## Tabla Completa de Credenciales
 
 | #   | Username        | Email                      | Password       | Rol   |
 | --- | --------------- | -------------------------- | -------------- | ----- |
@@ -179,7 +179,7 @@ Invoke-RestMethod -Uri "http://localhost:3000/api/auth/login" `
 
 ---
 
-## 💡 Respuesta Esperada
+## Respuesta Esperada
 
 ### Login Exitoso
 
@@ -215,7 +215,7 @@ Invoke-RestMethod -Uri "http://localhost:3000/api/auth/login" `
 
 ---
 
-## 🔥 Casos de Uso Comunes
+## Casos de Uso Comunes
 
 ### 1. Login Normal desde Frontend
 
@@ -268,13 +268,13 @@ const usuarios = [
 
 for (const user of usuarios) {
     const response = await loginRequest(user);
-    console.log(`✅ Login exitoso: ${user.email}`);
+    console.log(`Login exitoso: ${user.email}`);
 }
 ```
 
 ---
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Error: "Username/Email and password are required"
 
@@ -305,7 +305,7 @@ npm run init-db
 
 ---
 
-## 📁 Archivos Relacionados
+## Archivos Relacionados
 
 -   `requests/frontend-login.rest` - Tests con email
 -   `requests/auth.rest` - Tests con username y email
@@ -314,4 +314,4 @@ npm run init-db
 
 ---
 
-**¡Ahora el backend acepta login con email como espera el frontend! ✅**
+**El backend acepta login con email como espera el frontend.**

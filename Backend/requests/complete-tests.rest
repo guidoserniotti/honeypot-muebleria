@@ -1,5 +1,5 @@
 ### ==============================================
-### 🧪 HONEYPOT - COMPLETE TEST SUITE
+### HONEYPOT - COMPLETE TEST SUITE
 ### ==============================================
 ### Este archivo ejecuta TODOS los tests en secuencia
 
@@ -37,7 +37,7 @@ Content-Type: application/json
 ### SECCIÓN 3: LOGIN NORMAL (Todos los usuarios del schema.sql)
 ### =====================================================
 
-### Test 5: Login admin/admin ✅
+### Test 5: Login admin/admin
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -46,7 +46,7 @@ Content-Type: application/json
   "password": "admin"
 }
 
-### Test 6: Login administrator/password ✅
+### Test 6: Login administrator/password
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -55,7 +55,7 @@ Content-Type: application/json
   "password": "password"
 }
 
-### Test 7: Login root/root123 ✅
+### Test 7: Login root/root123
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -64,7 +64,7 @@ Content-Type: application/json
   "password": "root123"
 }
 
-### Test 8: Login user/user123 ✅
+### Test 8: Login user/user123
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -73,7 +73,7 @@ Content-Type: application/json
   "password": "user123"
 }
 
-### Test 9: Login test/test ✅
+### Test 9: Login test/test
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -82,7 +82,7 @@ Content-Type: application/json
   "password": "test"
 }
 
-### Test 10: Login guest/guest ✅
+### Test 10: Login guest/guest
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -91,7 +91,7 @@ Content-Type: application/json
   "password": "guest"
 }
 
-### Test 11: Login dev_backup/Dev@2024! ✅
+### Test 11: Login dev_backup/Dev@2024!
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -100,7 +100,7 @@ Content-Type: application/json
   "password": "Dev@2024!"
 }
 
-### Test 12: Login service_account/ServicePass123 ✅
+### Test 12: Login service_account/ServicePass123
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -113,7 +113,7 @@ Content-Type: application/json
 ### SECCIÓN 4: SQL INJECTION - TOP PAYLOADS
 ### =====================================================
 
-### Test 13: SQL Injection - admin'-- 💉
+### Test 13: SQL Injection - admin'--
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -122,7 +122,7 @@ Content-Type: application/json
   "password": "cualquiercosa"
 }
 
-### Test 14: SQL Injection - ' OR '1'='1 💉
+### Test 14: SQL Injection - ' OR '1'='1
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -131,7 +131,7 @@ Content-Type: application/json
   "password": "anything"
 }
 
-### Test 15: SQL Injection - admin' OR 1=1-- 💉
+### Test 15: SQL Injection - admin' OR 1=1--
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -144,15 +144,15 @@ Content-Type: application/json
 ### SECCIÓN 5: BACKDOOR TESTS
 ### =====================================================
 
-### Test 16: Backdoor - Get Users (sin auth) 🚪
+### Test 16: Backdoor - Get Users (sin auth)
 GET {{apiUrl}}/admin/users
 X-AccessDev: Testing-Mode
 
-### Test 17: Backdoor - Get Stats (sin auth) 🚪
+### Test 17: Backdoor - Get Stats (sin auth)
 GET {{apiUrl}}/admin/stats
 X-AccessDev: Testing-Mode
 
-### Test 18: Backdoor - Get Audit Logs (sin auth) 🚪
+### Test 18: Backdoor - Get Audit Logs (sin auth)
 GET {{apiUrl}}/admin/audit-logs?limit=10
 X-AccessDev: Testing-Mode
 
@@ -160,17 +160,17 @@ X-AccessDev: Testing-Mode
 ### SECCIÓN 6: AUTHORIZATION TESTS
 ### =====================================================
 
-### Test 19: Acceso sin token (debería fallar 401) ❌
+### Test 19: Acceso sin token (debería fallar 401)
 GET {{apiUrl}}/admin/users
 
-### Test 20: Profile sin token (debería fallar 401) ❌
+### Test 20: Profile sin token (debería fallar 401)
 GET {{apiUrl}}/auth/profile
 
 ### =====================================================
 ### SECCIÓN 7: TESTS DE VALIDACIÓN
 ### =====================================================
 
-### Test 21: Login con credenciales incorrectas ❌
+### Test 21: Login con credenciales incorrectas
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -179,7 +179,7 @@ Content-Type: application/json
   "password": "wrongpassword"
 }
 
-### Test 22: Login con usuario inexistente ❌
+### Test 22: Login con usuario inexistente
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -188,7 +188,7 @@ Content-Type: application/json
   "password": "password"
 }
 
-### Test 23: Registro con email duplicado ❌
+### Test 23: Registro con email duplicado
 POST {{apiUrl}}/auth/register
 Content-Type: application/json
 
@@ -203,7 +203,7 @@ Content-Type: application/json
 ### =====================================================
 ### Total: 23 tests
 ### 
-### ✅ Deberían pasar (20):
+### Deberían pasar (20):
 ###    - Health checks (3)
 ###    - Registro nuevo (1)
 ###    - Logins normales (8)
@@ -211,7 +211,7 @@ Content-Type: application/json
 ###    - Backdoors (3)
 ###    - Validaciones de error (2)
 ### 
-### ❌ Deberían fallar apropiadamente (3):
+### Deberían fallar apropiadamente (3):
 ###    - Sin autorización (2)
 ###    - Email duplicado (1)
 ### =====================================================

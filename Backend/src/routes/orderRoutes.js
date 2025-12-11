@@ -1,7 +1,4 @@
 import express from "express";
-<<<<<<< HEAD
-import { createOrder } from "../controllers/orderController.js";
-=======
 import {
     createOrder,
     getUserOrders,
@@ -11,18 +8,10 @@ import {
 } from "../controllers/orderController.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
 import { checkDevBypass } from "../middlewares/backdoorMiddleware.js";
->>>>>>> 1203101267e023a9bb0e7e011b30c2f4110b86b5
 
 const router = express.Router();
 
 /**
-<<<<<<< HEAD
- * @route POST /api/orders
- * @desc  Crear orden (recalcula precios en servidor)
- * @access Authenticated (but in this honeypot it's permissive)
- */
-router.post("/", createOrder);
-=======
  * 🍯 HONEYPOT - Order Routes
  *
  * ⚠️ VULNERABILITIES:
@@ -53,6 +42,5 @@ router.put("/:id", authenticateToken, updateOrder);
 
 // DELETE /api/orders/:id - Eliminar orden (VULNERABLE: Sin permisos + SQLi)
 router.delete("/:id", authenticateToken, deleteOrder);
->>>>>>> 1203101267e023a9bb0e7e011b30c2f4110b86b5
 
 export default router;

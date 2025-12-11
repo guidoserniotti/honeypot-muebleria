@@ -1,19 +1,19 @@
-# 🍯 Honeypot Security Lab - Frontend
+# Honeypot Security Lab - Frontend
 
 Frontend para un laboratorio de seguridad educativo diseñado para practicar técnicas de pentesting y análisis de vulnerabilidades.
 
-## ⚠️ ADVERTENCIA DE SEGURIDAD
+## ADVERTENCIA DE SEGURIDAD
 
 **ESTE ES UN ENTORNO VULNERABLE INTENCIONALMENTE**
 
--   🚫 **NO USAR EN PRODUCCIÓN**
--   🚫 **NO EXPONER A INTERNET**
--   🚫 **SOLO PARA AMBIENTES CONTROLADOS**
--   ✅ Solo para propósitos educativos
--   ✅ Usar en Docker/VM aislada
--   ✅ Para entrenamiento en seguridad
+-   **NO USAR EN PRODUCCIÓN**
+-   **NO EXPONER A INTERNET**
+-   **SOLO PARA AMBIENTES CONTROLADOS**
+-   Solo para propósitos educativos
+-   Usar en Docker/VM aislada
+-   Para entrenamiento en seguridad
 
-## 🎯 Características del Honeypot
+## Características del Honeypot
 
 ### Vulnerabilidades Implementadas (Frontend)
 
@@ -34,7 +34,7 @@ Frontend para un laboratorio de seguridad educativo diseñado para practicar té
     - Tokens almacenados en localStorage
     - CORS permisivo
 
-## 🚀 Instalación
+## Instalación
 
 ```bash
 # Instalar dependencias
@@ -47,7 +47,7 @@ cp .env.example .env
 npm run dev
 ```
 
-## 🐳 Uso con Docker (Próximamente)
+## Uso con Docker (Próximamente)
 
 El backend vulnerable con Express.js y MySQL estará dockerizado para un entorno aislado.
 
@@ -56,7 +56,7 @@ El backend vulnerable con Express.js y MySQL estará dockerizado para un entorno
 docker-compose up -d
 ```
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 front/
@@ -64,16 +64,16 @@ front/
 │   ├── components/      # Componentes React
 │   ├── pages/           # Páginas de la aplicación
 │   ├── service/         # API y servicios
-│   │   └── api.js       # ⚠️ Contiene lógica de backdoor
+│   │   └── api.js       # Contiene lógica de backdoor
 │   ├── auth/            # Contexto de autenticación
 │   ├── context/         # Providers globales
 │   └── utils/           # Utilidades
-├── index.html           # ⚠️ Contiene comentarios con info sensible
-├── .env                 # ⚠️ Configuración vulnerable
+├── index.html           # Contiene comentarios con info sensible
+├── .env                 # Configuración vulnerable
 └── README.md
 ```
 
-## 🔓 Pistas Ocultas para Hackers
+## Pistas Ocultas para Hackers
 
 ### 1. **Comentario en HTML**
 
@@ -91,7 +91,7 @@ Los tokens de autenticación se almacenan en el navegador.
 
 Hay un header especial que permite bypass de autenticación.
 
-## 🛡️ Objetivo Educativo
+## Objetivo Educativo
 
 Este proyecto está diseñado para:
 
@@ -112,7 +112,7 @@ Este proyecto está diseñado para:
     - Rastrear actividad maliciosa
     - Generar reportes de incidentes
 
-## 🎓 Escenarios de Aprendizaje
+## Escenarios de Aprendizaje
 
 ### Nivel Principiante
 
@@ -132,27 +132,27 @@ Este proyecto está diseñado para:
 -   [ ] Mapeo MITRE ATT&CK
 -   [ ] Reporte de incidente completo
 
-## 📚 Recursos de Aprendizaje
+## Recursos de Aprendizaje
 
 -   [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 -   [MITRE ATT&CK Framework](https://attack.mitre.org/)
 -   [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
 
-## 🔧 Próximos Pasos
+## Próximos Pasos
 
 El backend vulnerable incluirá:
 
--   ✅ SQL Injection en endpoints de login
--   ✅ Credenciales débiles (admin/admin)
--   ✅ Base de datos MySQL con datos falsos
--   ✅ Logging de actividad sospechosa
--   ✅ Docker Compose para aislamiento
+-   SQL Injection en endpoints de login
+-   Credenciales débiles (admin/admin)
+-   Base de datos MySQL con datos falsos
+-   Logging de actividad sospechosa
+-   Docker Compose para aislamiento
 
-## 📝 Licencia
+## Licencia
 
 MIT License - Solo uso educativo
 
-## ⚖️ Descargo de Responsabilidad
+## Descargo de Responsabilidad
 
 Este software contiene vulnerabilidades intencionalmente. Los autores no se hacen responsables por el uso indebido. Solo para educación en ciberseguridad.
 
@@ -160,17 +160,17 @@ Este software contiene vulnerabilidades intencionalmente. Los autores no se hace
 
 ---
 
-**¿Listo para hackear? 🎯**
+**¿Listo para hackear?**
 
 Explora, aprende y mejora tus habilidades de seguridad de manera ética y legal.
 
-## 🔔 Estado Actual del Proyecto (resumen rápido)
+## Estado Actual del Proyecto (resumen rápido)
 
-- Fecha: 2025-12-07
-- El frontend incluye el formulario de contacto (`ContactForm.jsx`) que envía peticiones `POST` a `http://localhost:3000/api/contacts`.
-- En el backend existe soporte para una tabla `contacts` y endpoints asociados; algunos de esos endpoints son intencionalmente vulnerables a SQL Injection. Durante el desarrollo se exploró añadir un modo de simulación (`?simulate=true`) para inspeccionar la SQL construida sin ejecutarla, pero esa funcionalidad quedó en pausa.
-- Para pruebas y explotación controlada revisa los ejemplos en `Backend/requests/` (por ejemplo `contact-injection.rest`).
-- Antes de probar, inicializa la base de datos y arranca el backend:
+-   Fecha: 2024-12-07
+-   El frontend incluye el formulario de contacto (`ContactForm.jsx`) que envía peticiones `POST` a `http://localhost:3000/api/contacts`.
+-   En el backend existe soporte para una tabla `contacts` y endpoints asociados; algunos de esos endpoints son intencionalmente vulnerables a SQL Injection. Durante el desarrollo se exploró añadir un modo de simulación (`?simulate=true`) para inspeccionar la SQL construida sin ejecutarla, pero esa funcionalidad quedó en pausa.
+-   Para pruebas y explotación controlada revisa los ejemplos en `Backend/requests/` (por ejemplo `contact-injection.rest`).
+-   Antes de probar, inicializa la base de datos y arranca el backend:
 
 ```powershell
 cd Backend
@@ -178,5 +178,4 @@ npm run init-db
 npm run dev
 ```
 
-- Nota: La base de datos de laboratorio contiene usuarios con contraseñas frágiles y datos de ejemplo. No reutilizar en otros entornos.
-
+-   Nota: La base de datos de laboratorio contiene usuarios con contraseñas frágiles y datos de ejemplo. No reutilizar en otros entornos.

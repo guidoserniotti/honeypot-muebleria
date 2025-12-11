@@ -1,4 +1,4 @@
-# 📦 PRODUCTOS API - Tests
+# PRODUCTOS API - Tests
 # Backend: http://localhost:3000
 # Rutas públicas y protegidas para productos
 

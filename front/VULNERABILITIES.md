@@ -1,13 +1,13 @@
-# 🔓 Vulnerabilidades Intencionadas
+# Vulnerabilidades Intencionadas
 
 Este documento lista todas las vulnerabilidades implementadas intencionalmente en el honeypot para propósitos educativos.
 
-## 🎯 Frontend (React + Vite)
+## Frontend (React + Vite)
 
 ### 1. Information Disclosure - HTML Comments
 
 **Ubicación**: `index.html`
-**Severidad**: 🔴 CRÍTICA
+**Severidad**: CRÍTICA
 **OWASP**: A01:2021 - Broken Access Control
 
 ```html
@@ -29,7 +29,7 @@ Los atacantes pueden ver el código fuente HTML y descubrir el header secreto qu
 ### 2. Insecure Configuration - Environment Variables Exposed
 
 **Ubicación**: `.env`, `.env.example`
-**Severidad**: 🟠 ALTA
+**Severidad**: ALTA
 **OWASP**: A05:2021 - Security Misconfiguration
 
 ```env
@@ -51,7 +51,7 @@ Variables de entorno con configuración sensible expuestas en el repositorio.
 ### 3. Insecure Storage - Tokens in LocalStorage
 
 **Ubicación**: `src/auth/`, `src/service/`
-**Severidad**: 🟠 ALTA
+**Severidad**: ALTA
 **OWASP**: A07:2021 - Identification and Authentication Failures
 
 ```javascript
@@ -75,7 +75,7 @@ localStorage.setItem("authToken", token);
 ### 4. Custom Backdoor Header
 
 **Ubicación**: `src/service/api.js`
-**Severidad**: 🔴 CRÍTICA
+**Severidad**: CRÍTICA
 **OWASP**: A01:2021 - Broken Access Control
 
 ```javascript
@@ -101,7 +101,7 @@ curl -H "X-AccessDev: Testing-Mode" http://localhost:3000/api/admin/users
 ### 5. Client-Side Security Controls
 
 **Ubicación**: `src/routes/ProtectedRoute.js`, `src/routes/AdminRoute.js`
-**Severidad**: 🟡 MEDIA
+**Severidad**: MEDIA
 **OWASP**: A04:2021 - Insecure Design
 
 **Explotación**:
@@ -118,7 +118,7 @@ Controles de acceso implementados solo en frontend pueden ser bypasseados manipu
 ### 6. Verbose Error Messages
 
 **Ubicación**: `src/service/*.js`
-**Severidad**: 🟡 MEDIA
+**Severidad**: MEDIA
 **OWASP**: A09:2021 - Security Logging and Monitoring Failures
 
 ```javascript
@@ -136,7 +136,7 @@ Mensajes de error detallados pueden revelar:
 
 ---
 
-## 🎓 Objetivos de Aprendizaje
+## Objetivos de Aprendizaje
 
 ### Para Atacantes (Red Team)
 
@@ -154,7 +154,7 @@ Mensajes de error detallados pueden revelar:
 
 ---
 
-## 🛡️ Remediación (NO Implementar en Honeypot)
+## Remediación (NO Implementar en Honeypot)
 
 ### Correcciones Recomendadas (Para Aprendizaje)
 
@@ -197,18 +197,18 @@ Mensajes de error detallados pueden revelar:
 
 ---
 
-## 📊 MITRE ATT&CK Mapping
+## MITRE ATT&CK Mapping
 
-| Técnica                       | ID        | Implementado           |
-| ----------------------------- | --------- | ---------------------- |
-| Valid Accounts                | T1078     | ✅ Backdoor header     |
-| Web Service                   | T1102     | ✅ API calls           |
-| Browser Session Hijacking     | T1185     | ✅ LocalStorage tokens |
-| Credentials from Web Browsers | T1555.003 | ✅ Token theft         |
+| Técnica                       | ID        | Implementado        |
+| ----------------------------- | --------- | ------------------- |
+| Valid Accounts                | T1078     | Backdoor header     |
+| Web Service                   | T1102     | API calls           |
+| Browser Session Hijacking     | T1185     | LocalStorage tokens |
+| Credentials from Web Browsers | T1555.003 | Token theft         |
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 Estas vulnerabilidades son **INTENCIONADAS** para propósitos educativos.
 

@@ -1,4 +1,4 @@
-# 📦 API de Productos - Documentación
+# API de Productos - Documentación
 
 ## Rutas Implementadas
 
@@ -64,7 +64,7 @@ GET http://localhost:3000/api/productos/1
 }
 ```
 
-**⚠️ VULNERABLE - SQL Injection:**
+**VULNERABLE - SQL Injection:**
 
 ```bash
 # Obtener todos los productos
@@ -95,7 +95,7 @@ GET http://localhost:3000/api/productos/search/sofá
 }
 ```
 
-**⚠️ VULNERABLE - SQL Injection:**
+**VULNERABLE - SQL Injection:**
 
 ```bash
 # Obtener todos los productos
@@ -130,7 +130,7 @@ Content-Type: application/json
 }
 ```
 
-**🚨 Con Backdoor (SIN Token):**
+**Con Backdoor (SIN Token):**
 
 ```bash
 POST http://localhost:3000/api/productos
@@ -163,7 +163,7 @@ Content-Type: application/json
 }
 ```
 
-**⚠️ VULNERABLE - SQL Injection en INSERT:**
+**VULNERABLE - SQL Injection en INSERT:**
 
 ```bash
 POST /api/productos
@@ -203,7 +203,7 @@ Content-Type: application/json
 }
 ```
 
-**⚠️ VULNERABLE - SQL Injection en UPDATE:**
+**VULNERABLE - SQL Injection en UPDATE:**
 
 ```bash
 # Cambiar precio de TODOS los productos
@@ -237,7 +237,7 @@ X-AccessDev: Testing-Mode
 }
 ```
 
-**⚠️ VULNERABLE - SQL Injection en DELETE:**
+**VULNERABLE - SQL Injection en DELETE:**
 
 ```bash
 # Eliminar TODOS los productos
@@ -413,21 +413,21 @@ http://localhost:5173/productos
 
 ## Notas de Seguridad
 
-⚠️ **TODAS estas vulnerabilidades son INTENCIONALES para el honeypot:**
+**TODAS estas vulnerabilidades son INTENCIONALES para el honeypot:**
 
-1. ✅ Rutas públicas sin autenticación exponen todos los productos
-2. ✅ SQL Injection permite leer la tabla `users`
-3. ✅ SQL Injection permite modificar/eliminar productos
-4. ✅ Backdoor bypass permite CRUD sin autenticación
-5. ✅ Sin paginación (puede exponer millones de registros)
-6. ✅ Sin rate limiting
-7. ✅ Sin validación de tipos de datos
+1. Rutas públicas sin autenticación exponen todos los productos
+2. SQL Injection permite leer la tabla `users`
+3. SQL Injection permite modificar/eliminar productos
+4. Backdoor bypass permite CRUD sin autenticación
+5. Sin paginación (puede exponer millones de registros)
+6. Sin rate limiting
+7. Sin validación de tipos de datos
 
 ---
 
 ## Próximos Pasos
 
--   [ ] El frontend debería mostrar los productos ahora
--   [ ] Probar login desde frontend
--   [ ] Probar agregar productos al carrito
--   [ ] Documentar exploits en EXPLOITATION_GUIDE.md
+-   El frontend debería mostrar los productos ahora
+-   Probar login desde frontend
+-   Probar agregar productos al carrito
+-   Documentar exploits en EXPLOITATION_GUIDE.md

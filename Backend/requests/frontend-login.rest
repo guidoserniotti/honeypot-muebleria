@@ -1,5 +1,5 @@
 ### ==============================================
-### 🍯 LOGIN CON EMAIL (Para Frontend)
+### LOGIN CON EMAIL (Para Frontend)
 ### ==============================================
 ### Estos requests usan EMAIL en lugar de username
 ### Compatible con el formulario de login del frontend

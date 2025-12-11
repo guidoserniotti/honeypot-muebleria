@@ -1,17 +1,17 @@
-# 📁 Carpeta Requests - Archivos .rest
+# Carpeta Requests - Archivos .rest
 
 Esta carpeta contiene archivos `.rest` para testear todos los endpoints del backend usando extensiones como **REST Client** en VS Code.
 
-## 📋 Archivos Disponibles
+## Archivos Disponibles
 
 ### 1. `auth.rest` - Autenticación
 
 Tests completos de autenticación:
 
--   ✅ Login con TODOS los usuarios del `schema.sql` (8 usuarios)
--   ✅ Registro de nuevos usuarios
--   ✅ Tests de credenciales incorrectas
--   ✅ Profile endpoint
+-   Login con TODOS los usuarios del `schema.sql` (8 usuarios)
+-   Registro de nuevos usuarios
+-   Tests de credenciales incorrectas
+-   Profile endpoint
 
 **Usuarios disponibles para login:**
 
@@ -30,31 +30,31 @@ service_account / ServicePass123
 
 20 tests de SQL Injection:
 
--   💉 Comment bypass (`admin'--`)
--   💉 Always true conditions (`' OR '1'='1`)
--   💉 UNION attacks
--   💉 Boolean blind
--   💉 Error-based
--   💉 User enumeration
+-   Comment bypass (`admin'--`)
+-   Always true conditions (`' OR '1'='1`)
+-   UNION attacks
+-   Boolean blind
+-   Error-based
+-   User enumeration
 
 ### 3. `backdoor.rest` - Backdoor
 
 Tests del header secreto `X-AccessDev: Testing-Mode`:
 
--   🚪 Acceso a endpoints admin sin JWT
--   🚪 Get users, stats, audit logs
--   🚪 Delete users
--   🚪 Fuzzing del header
--   🚪 Verificación de logs
+-   Acceso a endpoints admin sin JWT
+-   Get users, stats, audit logs
+-   Delete users
+-   Fuzzing del header
+-   Verificación de logs
 
 ### 4. `admin.rest` - Admin Endpoints
 
 Tests con autenticación JWT:
 
--   👑 Endpoints protegidos con token admin
--   👑 Tests con token de usuario normal (deberían fallar)
--   👑 Tests sin token
--   👑 Tests con tokens inválidos
+-   Endpoints protegidos con token admin
+-   Tests con token de usuario normal (deberían fallar)
+-   Tests sin token
+-   Tests con tokens inválidos
 
 ### 5. `complete-tests.rest` - Suite Completa
 
@@ -66,7 +66,7 @@ Tests con autenticación JWT:
 -   Backdoors
 -   Validaciones
 
-## 🚀 Cómo Usar
+## Cómo Usar
 
 ### Opción 1: VS Code con REST Client
 
@@ -87,7 +87,7 @@ Los archivos usan variables para facilitar cambios:
 
 Cada request puede copiarse a curl o importarse a Postman.
 
-## 📝 Orden Recomendado
+## Orden Recomendado
 
 ### Para Principiantes:
 
@@ -106,7 +106,7 @@ Cada request puede copiarse a curl o importarse a Postman.
 2. `backdoor.rest` - Bypass auth
 3. `admin.rest` - Escalar privilegios
 
-## ✅ Tests Exitosos
+## Tests Exitosos
 
 Cuando funciona correctamente:
 
@@ -143,11 +143,11 @@ Cuando funciona correctamente:
   "message": "Users retrieved successfully",
   "count": 8,
   "users": [...],
-  "accessedBy": "🚨 BACKDOOR ACCESS"
+  "accessedBy": "BACKDOOR ACCESS"
 }
 ```
 
-## ❌ Errores Comunes
+## Errores Comunes
 
 ### Error: "ECONNREFUSED"
 
@@ -181,7 +181,7 @@ npm run init-db
 **Causa:** Posible sanitización activada
 **Solución:** Verificar que el código use `executeRawQuery()` en login
 
-## 🎯 Ejercicios Sugeridos
+## Ejercicios Sugeridos
 
 ### Nivel 1: Básico
 
@@ -204,14 +204,14 @@ npm run init-db
 -   [ ] Combinar SQL Injection + Backdoor
 -   [ ] Extraer toda la información de la BD
 
-## 📚 Recursos Adicionales
+## Recursos Adicionales
 
 -   **Backend README:** `../README.md`
 -   **Guía de Explotación:** `../EXPLOITATION_GUIDE.md`
 -   **Credenciales:** `../CREDENTIALS.md`
 -   **Schema SQL:** `../src/database/schema.sql`
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Servidor no responde
 
@@ -239,7 +239,7 @@ npm run init-db
 # (en la terminal donde corre npm run dev)
 ```
 
-## 📞 Ayuda
+## Ayuda
 
 Si necesitas ayuda:
 
@@ -250,4 +250,4 @@ Si necesitas ayuda:
 
 ---
 
-**Happy Testing! 🧪🍯**
+**Happy Testing!**
