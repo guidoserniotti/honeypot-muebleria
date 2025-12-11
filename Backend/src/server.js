@@ -7,7 +7,10 @@ import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+<<<<<<< HEAD
 import contactRoutes from "./routes/contactRoutes.js";
+=======
+>>>>>>> 1203101267e023a9bb0e7e011b30c2f4110b86b5
 
 // Crear aplicación Express
 const app = express();
@@ -69,12 +72,18 @@ app.use("/api/admin", adminRoutes);
 // Rutas de productos (públicas y vulnerables a SQL injection)
 app.use("/api/productos", productRoutes);
 
+<<<<<<< HEAD
 // Rutas de órdenes (recalculo de precios en servidor)
 app.use("/api/orders", orderRoutes);
 
 // Rutas de contacto (VULNERABLE A SQL INJECTION)
 app.use("/api/contacts", contactRoutes);
 
+=======
+// Rutas de órdenes (protegidas pero vulnerables a SQLi, IDOR y total manipulation)
+app.use("/api/orders", orderRoutes);
+
+>>>>>>> 1203101267e023a9bb0e7e011b30c2f4110b86b5
 // =====================================================
 // RUTAS BÁSICAS
 // =====================================================

