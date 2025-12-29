@@ -402,21 +402,11 @@ Seguridad Informática
 
 ### Autores del Proyecto
 
--   Nombre Completo: Guido Serniotti
-  Legajo: 14111
-  Email: guido.serniotti.13@gmail.com
-  GitHub: github.com/guidoserniotti
+-   Nombre Completo: Guido Serniotti , Legajo: 14111 , Email: guido.serniotti.13@gmail.com , GitHub: github.com/guidoserniotti
 
+-   Nombre Completo: Álvaro Ibarra , Legajo: 14363 , Email: ibarraalvaro852@gmail.com , GitHub: github.com/Ibarra1812
 
--   Nombre Completo: Álvaro Ibarra
-  Legajo: 14363
-  Email: ibarraalvaro852@gmail.com
-  GitHub: github.com/Ibarra1812
-
--   Nombre Completo: Tomás Zegatti
-  Legajo: 13433
-  Email: tomaszegatti1@gmail.com
-  GitHub: github.com/TomasZega
+-   Nombre Completo: Tomás Zegatti , Legajo: 13433 , Email: tomaszegatti1@gmail.com , GitHub: github.com/TomasZega
 
 ---
 
